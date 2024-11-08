@@ -1,2 +1,0 @@
-# LunaFlame
-An Astrology App
