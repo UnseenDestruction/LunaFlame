@@ -6,10 +6,26 @@ import { BlurView } from 'expo-blur';
 import DreamStars from '@/assets/images/Dream/dreamStars.mp4';
 import Diamond from '@/assets/images/Dream/diamond.svg';
 import { fetchDreamResponse } from '@/lib/dream'; 
+import AntDesign from '@expo/vector-icons/AntDesign';
+import { useFonts } from 'expo-font';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
+
 
 export default function Main({ navigation, setIsLoading, setAnalysisResult }: any) {
   const [inputText, setInputText] = useState("");
   const [isLoading, setMainLoading] = useState(false);
+
+
+  const [loaded] = useFonts({
+    Light: require('@/assets/fonts/Light.ttf'),
+    Regular: require('@/assets/fonts/Regular.ttf'),
+    Medium: require('@/assets/fonts/Medium.ttf'),
+    bol: require('@/assets/fonts/QuicksandSemiBold.ttf'),
+});
+
+
+
 
   const handleSend = async () => {
     if (inputText.length < 20) return; 
@@ -60,14 +76,24 @@ export default function Main({ navigation, setIsLoading, setAnalysisResult }: an
     pulse();
   }, [scale]);
 
+
+  if (!loaded) {
+    return (
+      <SafeAreaProvider style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#000' }}>
+        <ActivityIndicator size="large" color="#B2AFFE" />
+      </SafeAreaProvider>
+    );
+  }
+
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider style={{flex: 1, }}>
+      <GestureHandlerRootView style={{ flex: 1,   }}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <KeyboardAvoidingView
           style={{ flex: 1 }}
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         >
-          <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+          <SafeAreaView style={{ flex: 1, backgroundColor: "#000",}}>
             <View style={{ height: '60%', position: 'absolute', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
               <Video
                 source={DreamStars}
@@ -80,20 +106,26 @@ export default function Main({ navigation, setIsLoading, setAnalysisResult }: an
             </View>
 
             <BlurView
-              intensity={35}
+              intensity={15}
               tint="light"
               style={{
                 overflow: 'hidden',
-                justifyContent: 'space-between',
-                alignItems: 'flex-start',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
                 flexDirection: 'row',
+                gap: 10,
                 borderRadius: 10,
                 padding: 10,
                 paddingVertical: 10,
               }}
             >
-              <Text style={{ color: '#B2AFFE', fontSize: 30 }}>Dream Explain</Text>
-              <Diamond width={50} height={50} />
+              <TouchableOpacity onPress={() => navigation.navigate('Nav')}>
+              <View style={{padding: 10, backgroundColor: 'rgba(50, 50, 50, 1)', borderRadius: 999}}>
+                <AntDesign name="left" size={24} color="rgba(255, 255, 255, 0.5)" />
+                </View>
+              </TouchableOpacity>
+            
+                    <Text style={{ color: '#B2AFFE', fontSize: 30,  fontFamily: 'Light',  }}>DREAM EXPLAIN</Text>
             </BlurView>
 
             <View
@@ -105,7 +137,7 @@ export default function Main({ navigation, setIsLoading, setAnalysisResult }: an
                 paddingBottom: 40,
               }}
             >
-              <Text style={{ color: '#B2AFFE', textAlign: 'center', marginBottom: 10, width: '60%' }}>
+              <Text style={{ color: '#B2AFFE', textAlign: 'center', marginBottom: 10, width: '60%', fontFamily: 'Light', }}>
                 Describe your dream and let Luna give you a clue about what it means
               </Text>
 
@@ -120,9 +152,10 @@ export default function Main({ navigation, setIsLoading, setAnalysisResult }: an
                     padding: 20,
                     textAlign: 'center',
                     color: '#B2AFFE',
+                    fontFamily: 'Light',
                   }}
-                  placeholder="Describe Your Dream"
-                  placeholderTextColor="rgba(255, 255, 255, 0.7)"
+                  placeholder="Describe your dream..."
+                  placeholderTextColor="rgba(178, 175, 254, 1)"
                   value={inputText}
                   onChangeText={(text) => setInputText(text)}
                 />
@@ -131,13 +164,14 @@ export default function Main({ navigation, setIsLoading, setAnalysisResult }: an
                     <ActivityIndicator size="large" color="#B2AFFE" />
                   ) : (
                     inputText.length >= 20 && (
-                        <Animated.View style={{ transform: [{ scale }] }}>
+                        <Animated.View style={{    borderColor: '#B2AFFE52',
+                            borderWidth: 1, borderRadius: 9999, padding: 5, transform: [{ scale }] }}>
                         <TouchableOpacity
                           style={{
                             backgroundColor: '#B2AFFE',
                             borderRadius: 999,
                             paddingVertical: 12,
-                            paddingHorizontal: 50,
+                            paddingHorizontal: 70,
                             alignItems: 'center',
                             shadowColor: '#000',
                             shadowOffset: { width: 0, height: 4 },
@@ -147,7 +181,7 @@ export default function Main({ navigation, setIsLoading, setAnalysisResult }: an
                           }}
                           onPress={handleSend}
                         >
-                          <Text style={{ color: '#000', fontSize: 13, fontWeight: 'bold' }}>REVEAL DREAM</Text>
+                          <Text style={{ color: '#000', fontSize: 13,  fontFamily: 'bold' }}>REVEAL DREAM</Text>
                         </TouchableOpacity>
                       </Animated.View>
                     )
@@ -158,6 +192,7 @@ export default function Main({ navigation, setIsLoading, setAnalysisResult }: an
           </SafeAreaView>
         </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
+      </GestureHandlerRootView>
     </SafeAreaProvider>
   );
 }

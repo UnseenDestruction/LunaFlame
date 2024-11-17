@@ -1,13 +1,14 @@
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Main from '@/components/Dream/main';
 import Analyze from '@/components/Dream/analyze';
-import Result from '@/components/Dream/result';
+import Result from '@/app/tabs/guidance/Dresult';
 import { useState, useEffect } from 'react';
 
-export default function Dream({ navigation }: any) {
+export default function Crystal({ navigation }: any) {
   const [loading, setIsLoading] = useState(false);
   const [isAnalyzed, setIsAnalyzed] = useState(false);
   const [analysisResult, setAnalysisResult] = useState<any>(null);
+
 
   useEffect(() => {
     if (analysisResult) {
@@ -15,9 +16,19 @@ export default function Dream({ navigation }: any) {
     }
   }, [analysisResult]);
 
+  const resetAnalysis = () => {
+    setIsAnalyzed(false);
+    setAnalysisResult(null);
+  };
+
+  useEffect(() => {
+    navigation.setOptions({
+      tabBarStyle: loading || !isAnalyzed ? { display: 'none' } : { display: 'flex' },
+    });
+  }, [navigation, loading, isAnalyzed]);
 
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider style={{ flex: 1 }}>
       {loading ? (
         <Analyze />
       ) : isAnalyzed ? (
@@ -26,6 +37,7 @@ export default function Dream({ navigation }: any) {
           image={analysisResult.image}
           userMessage={analysisResult.userMessage}
           setIsLoading={setIsLoading}
+          onBack={resetAnalysis}
         />
       ) : (
         <Main

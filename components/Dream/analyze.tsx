@@ -1,14 +1,12 @@
 import React, { useEffect, useRef } from 'react';
-import { SafeAreaView, Text, View, Image, StyleSheet, Animated, Easing } from 'react-native';
+import { SafeAreaView, Text, View, Image, StyleSheet, Animated, Easing, ActivityIndicator } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient'; 
 import { useFonts } from 'expo-font';
 
 import Soul from '@/assets/images/Dream/soul.gif'; 
 import Cloud1 from '@/assets/images/Dream/cloud1.svg'
-import Cloud2 from '@/assets/images/Dream/cloud2.svg'
 import Cloud5 from '@/assets/images/Dream/cloud5.png'
-import Cloud6 from '@/assets/images/Dream/cloud6.svg'
 
 
 export default function Analyze({ navigation }: any) {
@@ -18,29 +16,18 @@ export default function Analyze({ navigation }: any) {
 
     
 
-    const [fontsLoaded] = useFonts({
-        SourGummy: require('@/assets/fonts/SourGummy.ttf'), 
-    });
+    const [loaded] = useFonts({
+      Light: require('@/assets/fonts/Light.ttf'),
+      Regular: require('@/assets/fonts/Regular.ttf'),
+      Medium: require('@/assets/fonts/Medium.ttf'),
+      Semibold: require('@/assets/fonts/Semibold.ttf'),
+      Bold: require('@/assets/fonts/QuicksandSemiBold.ttf'),
+  });
+  
+
 
 
     useEffect(() => {
-        Animated.loop(
-            Animated.sequence([
-                Animated.timing(cloud1Animation, {
-                    toValue: 40,
-                    duration: 4000,
-                    easing: Easing.linear,
-                    useNativeDriver: true,
-                }),
-                Animated.timing(cloud1Animation, {
-                    toValue: -30,
-                    duration: 4000,
-                    easing: Easing.linear,
-                    useNativeDriver: true,
-                }),
-            ])
-        ).start();
-
         Animated.loop(
             Animated.sequence([
                 Animated.timing(cloud5Animation, {
@@ -58,26 +45,18 @@ export default function Analyze({ navigation }: any) {
             ])
         ).start();
 
-        Animated.loop(
-            Animated.sequence([
-                Animated.timing(pulseAnimation, {
-                    toValue: 20, 
-                    duration: 1000,
-                    useNativeDriver: false,
-                }),
-                Animated.timing(pulseAnimation, {
-                    toValue: 10, 
-                    duration: 1000,
-                    useNativeDriver: false,
-                }),
-            ])
-        ).start();
-    }, [cloud1Animation, cloud5Animation, pulseAnimation]);
+    }, [ cloud5Animation]);
 
 
-      if (!fontsLoaded) {
-        return null;
+
+    if (!loaded) {
+      return (
+        <SafeAreaProvider style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#000' }}>
+          <ActivityIndicator size="large" color="#B2AFFE" />
+        </SafeAreaProvider>
+      );
     }
+    
 
   return (
     <SafeAreaProvider>
@@ -115,20 +94,26 @@ export default function Analyze({ navigation }: any) {
                 height: '65%', 
                 position: 'relative',
                 top: -165,
-                zIndex: 0 
+                zIndex: 0,
+                opacity: 0.8
               }}
             />
           </View>
-          <Animated.Text style={{    color: '#B2AFFE', 
-    fontSize: 24, 
-    textAlign: 'center', 
-    position: 'relative', 
-    fontFamily: 'SourGummy',
-    textShadowColor: '#B2AFFE',
-    textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: pulseAnimation  }}>
-             Analyzing your dream
-            </Animated.Text>
+                    <Text 
+            style={{    
+              color: "#FFFFFF",
+              fontSize: 25,
+              textShadowColor: "#B2AFFE",
+              textShadowRadius: 10,       
+              fontFamily: 'Bold',         
+              textShadowOffset: { width: 0, height: 0 },
+              opacity: 0.8,
+              textAlign: 'center',
+            }}
+          >
+            Analysing your dream
+          </Text>
+
             <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'flex-end', width: '100%', }}>
             <Animated.Image
               source={Cloud5} 
@@ -137,11 +122,11 @@ export default function Analyze({ navigation }: any) {
                 width: '100%', 
                 height: '100%', 
                 resizeMode: 'contain',
-                opacity: 0.8,
+                opacity: 0.5,
                 transform: [{ translateX: cloud5Animation }],
               }}
             />
-              <Cloud1 width={'100%'} height={250} style={{ position: 'relative', right: 120, opacity: 1 }} />
+              <Cloud1 width={'100%'} height={250} style={{ position: 'relative', right: 120, opacity: 0.7 }} />
             </View>
         </LinearGradient>
       </SafeAreaView>
