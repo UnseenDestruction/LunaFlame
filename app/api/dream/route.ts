@@ -8,6 +8,7 @@ import {
 } from "@langchain/core/prompts";
 
 const GPT = process.env.GPT;
+const ACCESS_CODE = process.env.ACCESS_CODE; 
 const openai = new OpenAI({ apiKey: GPT });
 
 const prompt = ChatPromptTemplate.fromMessages([
@@ -17,6 +18,11 @@ const prompt = ChatPromptTemplate.fromMessages([
 
 export async function POST(request: Request) {
     try {
+        const accessCode = request.headers.get("x-api-key");
+        if (!accessCode || accessCode !== ACCESS_CODE) {
+            return new NextResponse('Unauthorized', { status: 401 });
+        }
+
         const body = await request.json();
         const { userMessage } = body;
 
@@ -60,7 +66,7 @@ export async function POST(request: Request) {
             userMessage: userMessage
         });
 
-    } catch (error: any) {
+    } catch (error) {
         console.error('Error:', error);
         return new NextResponse('Internal Server Error', { status: 500 });
     }
