@@ -7,10 +7,15 @@ import {
   TabButtonLayout
 } from 'react-native-animated-nav-tab-bar';
 import { View, Text } from 'react-native';
-import MGuidance from './tabs/MainGuidance';
-import Main from '@/components/Dream/main';
 import { useNavigationState } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
+
+
+import MReadings from './tabs/Mreadings';
+import MGuidance from './tabs/MainGuidance';
+import MCompatibility from './tabs/Mcompatibility';
+import MHoroscope from './tabs/Mhoroscope';
+import MProfile from './tabs/Mprofile';
 
 import Horoscope from '@/assets/images/nav/moon.svg';
 import Readings from '@/assets/images/nav/live.svg';
@@ -25,10 +30,6 @@ import CCompatibility from '@/assets/images/nav/clicked/Compa.svg';
 
 
 
-const HomeScreen = () => <View style={{ flex: 1, backgroundColor: '#000' }} />;
-const ProfileScreen = () => <View style={{ flex: 1, backgroundColor: '#000' }} />;
-const Screen = () => <View style={{ flex: 1, backgroundColor: '#000' }} />;
-const TestScreen = () => <View style={{ flex: 1, backgroundColor: '#000' }} />;
 
 export default function Nav({route}: any) {
   const Tabs = AnimatedTabBarNavigator();
@@ -67,8 +68,8 @@ export default function Nav({route}: any) {
       initialRouteName={'Home'}
     >
       <Tabs.Screen
-        name="Horoscope"
-        component={HomeScreen}
+        name="TabHoroscope"
+        component={MHoroscope}
         options={{
           tabBarLabel: 'Horoscope',
           tabBarIcon: ({ focused }: any) =>
@@ -80,8 +81,8 @@ export default function Nav({route}: any) {
     }}
       />
       <Tabs.Screen
-        name="Readings"
-        component={TestScreen}
+        name="TabReadings"
+        component={MReadings}
         options={{
           tabBarLabel: 'Readings',
           tabBarIcon: ({ focused }: any) =>
@@ -93,8 +94,8 @@ export default function Nav({route}: any) {
     }}
       />
       <Tabs.Screen
-        name="Compatibility"
-        component={Screen}
+        name="TabCompatibility"
+        component={MCompatibility}
         options={{
           tabBarLabel: 'Compatibility',
           tabBarIcon: ({ focused }: any) =>
@@ -106,7 +107,7 @@ export default function Nav({route}: any) {
     }}
       />
    <Tabs.Screen
-  name="Guidance1" 
+  name="TabGuidance" 
   component={MGuidance}
   options={{
     tabBarLabel: 'Guidance',
@@ -120,8 +121,8 @@ export default function Nav({route}: any) {
 />
 
       <Tabs.Screen
-        name="Profile"
-        component={ProfileScreen}
+        name="TabProfile"
+        component={MProfile}
         options={{
           tabBarStyle: { display: 'none' }, 
           tabBarLabel: 'Profile',

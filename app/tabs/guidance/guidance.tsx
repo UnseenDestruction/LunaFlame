@@ -32,7 +32,7 @@ export default function Guidance() {
 
     return (
         <SafeAreaProvider style={{ flex: 1, backgroundColor: '#000', padding: 5, gap: 18 }}>
-             <Text style={{ color: '#B2AFFE', fontSize: 30,  fontFamily: 'Medium',  }}>Guidance</Text>
+             <Text style={{ color: '#B2AFFE', fontSize: 30,  fontFamily: 'Medium',  }}>GUIDANCE</Text>
 <TouchableOpacity
   onPress={() => navigation.navigate('Analyze')}
   style={{

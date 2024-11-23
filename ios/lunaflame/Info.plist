@@ -15,7 +15,15 @@
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     <key>CFBundleName</key>
-    <string>$(PRODUCT_NAME)</string>
+    <string>LunaFlame</string>
+    <key>NSCameraUsageDescription</key>
+<string>Allow this app to access your camera to capture images.</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>Allow this app to access your photo library.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Allow LunaFlame to use the camera</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Allow LunaFlame to use the microphone</string>
     <key>CFBundlePackageType</key>
     <string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
     <key>CFBundleShortVersionString</key>

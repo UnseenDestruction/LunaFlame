@@ -1,6 +1,6 @@
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Main from '@/components/Dream/main';
-import Analyze from '@/components/Dream/analyze';
+import Main from '@/components/Guidance/Dream/main';
+import Analyze from '@/components/Guidance/Dream/analyze';
 import Result from '@/app/tabs/guidance/Dresult';
 import { useState, useEffect } from 'react';
 

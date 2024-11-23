@@ -14,7 +14,7 @@ import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useFonts } from "expo-font";
-import Main from "../../../components/Dream/main";
+import Main from "../../../components/Guidance/Dream/main";
 import { RouteProp, useRoute } from "@react-navigation/native";
 
 type GuidanceStackParamList = {

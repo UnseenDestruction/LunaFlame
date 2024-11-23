@@ -1,8 +1,8 @@
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Main from '@/components/Dream/main';
-import Analyze from '@/components/Dream/analyze';
+import Main from '@/components/Guidance/Dream/main';
+import Analyze from '@/components/Guidance/Dream/analyze';
 import { useState, useEffect } from 'react';
-
+import React from 'react';
 
 export default function Dream({ navigation }: any) {
   const [loading, setIsLoading] = useState(false);
@@ -13,10 +13,11 @@ export default function Dream({ navigation }: any) {
     if (analysisResult) {
       setIsAnalyzed(true);
       navigation.navigate('Nav', {
-        screen: 'Guidance1',
+        screen: 'TabGuidance',
         params: {
           screen: 'Result', 
           params: {
+            navigation: navigation,
             assistantResponse: analysisResult.content,
             image: analysisResult.image,
             userMessage: analysisResult.userMessage,

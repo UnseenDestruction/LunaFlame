@@ -8,10 +8,12 @@ import Nav from '@/app/nav';
 import { useNetInfo } from '@react-native-community/netinfo';
 import Fallback from './fallback';
 import Dream from './tabs/guidance/dream';
-import Main from '../components/Dream/main';
-import Analyze from '../components/Dream/analyze';
+import Palm from './tabs/readings/palm/palm';
+import Main from '../components/Guidance/Dream/main';
+import Analyze from '../components/Guidance/Dream/analyze';
 import Result from './tabs/guidance/Dresult';
 import MGuidance from './tabs/MainGuidance';
+import Capture from '@/components/Readings/palm/captured';
 
 export default function Index() {
     const Stack = createStackNavigator();
@@ -31,6 +33,7 @@ export default function Index() {
                          <Stack.Screen name="Auth" component={Auth} />
                         <Stack.Screen name={'Nav'} component={Nav} />
                         <Stack.Screen name={'Dream'} component={Dream} />
+                        <Stack.Screen name={'Palm'} component={Palm} />
                     </Stack.Navigator>
                 </NavigationContainer>
             </GestureHandlerRootView>
