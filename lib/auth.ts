@@ -1,7 +1,6 @@
 import { supabase } from './supabase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// import { generateStripeId } from '@/lib/stripe';
 
 export async function signInWithEmail(
     email: string,
@@ -26,18 +25,27 @@ export async function signInWithEmail(
 export async function signUpWithEmail(
     name: string,
     email: string,
-    password: string
+    password: string,
+    dob: string,
+    tob: string,
+    lob: string,
+    gender: string,
+    relation: string
 ) {
-    const [lastName, ...nameParts] = name.trim().split(' ').reverse();
-    const firstName = nameParts.reverse().join(' ');
+
 
     const { data: { user }, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
             data: {
-                first_name: firstName,
-                last_name: lastName,
+                Name: name,
+                dob: dob,
+                lob: lob,
+                tob: tob,
+                gender: gender,
+                relation: relation
+
             }
         },
     });
@@ -49,8 +57,12 @@ export async function signUpWithEmail(
     await addUserToDatabase(
         user.id,
         email,
-        firstName,
-        lastName,
+        name,
+        dob,
+        tob,
+        lob,
+        gender,
+        relation
     );
 
     return { success: true };
@@ -70,8 +82,12 @@ export async function signOutUser() {
 export async function addUserToDatabase(
     userId: string | undefined,
     email: string | undefined,
-    firstName: string | undefined,
-    lastName: string | undefined
+    Name: string | undefined,
+    DOB: string | undefined,
+    TOB: string | undefined,
+    LOB: string | undefined,
+    Gender: string | undefined,
+    Relation: string | undefined
 ) {
 
 
@@ -80,29 +96,10 @@ export async function addUserToDatabase(
         .insert([{
             userId: userId,
             email: email,
-            firstName: firstName,
-            lastName: lastName,
-            systemLanguage: 'English (US)',
-            systemLocale: 'en-US',
-            targetLanguage: 'English (US)',
-            targetLocale: 'en-US',
-            difficulty: '',
-            avatar: '',
-            subscriptionId: '',
-            subscriptionType: 'FREE',
-            subscriptionStart: null,
-            subscriptionEnd: null,
+            Name: Name,
+            DOB: DOB,
+            TOB: TOB,
             lastSignedIn: new Date().toISOString(),
-            write: 0,
-            speak: 0,
-            listen: 0,
-            read: 0,
-            mistakes: [],
-            history: [],
-            premiumVoiceUsage: 0,
-            premiumVoiceQuota: 0,
-            streak: 0,
-            streakUpdated: new Date().toISOString()
         }]);
 
     if (error) {
