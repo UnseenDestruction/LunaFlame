@@ -1,101 +1,134 @@
+"use client"
+
 import Image from "next/image";
+import "./globals.css";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <main className="relative min-h-screen bg-black">
+      <div className="h-[100vh] w-[100vw] relative">
+      <div className="absolute inset-0 bg-gradient-to-b top-[-800px] from-[#0D0D33] via-[#101052] to-black">
+        <div className="absolute inset-0 flex items-center justify-center ">
+          {[...Array(7)].map((_, index) => (
+            <div
+              key={index}
+              className={`absolute rounded-full border border-[rgba(255,255,255,0.3)]`}
+              style={{
+                width: `${400 + index * 200}px`,
+                height: `${400 + index * 200}px`,
+              }}
+            >
+              
+              </div>
+          ))}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </div>
+
+<div className="sun">
+<Image 
+              src="/luna.svg"
+              alt="Luna"
+              width={600}
+              height={600}
+              className="relative left-[29%] top-[-50px] animate-pulse z-50 "
+            />
+
+<div className="bg-black rounded-full w-[400px] h-[400px] absolute left-[515px] top-[-200px] "> 
+</div>
+</div>
+          
+
+      <div className="relative">
+            <Image
+              src="/4.png"
+              alt="Moon"
+              width={80}
+              height={80}
+              className="absolute left-[930px] bottom-[460px] opacity-50 moon1 rotate-[-19deg] animate-orbit1 "
+            />
+           <Image
+          src="/2.png"
+          alt="Moon"
+          width={50}
+          height={50}
+          className="absolute  bottom-[450px] left-[345px] opacity-20 moon2 "
+        />
+           <Image
+          src="/3.png"
+          alt="Moon"
+          width={100}
+          height={100}
+          className="absolute  bottom-[260px] left-[300px] opacity-20 moon3"
+        />
+           <Image
+          src="/1.png"
+          alt="Moon"
+          width={80}
+          height={80}
+          className="absolute  bottom-[80px] left-[400px] opacity-60  transform rotate-[-10deg] moon4" 
+        />
+           <Image
+          src="/moon2.png"
+          alt="Moon"
+          width={150}
+          height={150}
+          className="absolute bottom-[300px] left-[1150px] opacity-50 moon5"
+        />
+          
+           <Image
+          src="/big.png"
+          alt="Moon"
+          width={250}
+          height={250}
+          className="absolute bottom-[-83px] left-[700px] opacity-50 transform rotate-[2deg] moon6"
+        />
+
+      </div>
+      </div>
+
+      <div className="flex justify-center items-center flex-col h-[100vh] w-[100vw]">
+        
+<Image 
+src='/typo.png'
+alt="type"
+width={1200}
+height={1200}
+/>
+
+          <div>
+
+        <div className="flex justify-center items-center gap-[18px]">
+                       <div className="bg-[#FC0160] h-[12px] w-[12px] rounded-full" />
+                    <div 
+                    
+                    className="bg-[#FC0160] h-[20px] w-[20px] rounded-full" />
+             <a href="mailto:your-email@example.com">
+             <button
+  className="
+    bg-[#FC0160] 
+    rounded-full 
+    p-3
+    px-8
+    flex 
+    items-center 
+    shadow-lg
+    text-black
+    font-bold
+  "
+  onClick={() => window.location.href = 'mailto:your-email@example.com'}
+>
+  Join Waitlist
+</button>
+</a>
+
+                <div  className="bg-[#FC0160] h-[20px] w-[20px] rounded-full" />
+
+                <div  className="bg-[#FC0160] h-[12px] w-[12px] rounded-full" />
+
+                </div>
+
+        </div>
+</div>
+    </main>
   );
 }
