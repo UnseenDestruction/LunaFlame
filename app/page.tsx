@@ -1,134 +1,117 @@
 "use client"
 
+import React from "react";
 import Image from "next/image";
-import "./globals.css";
 
-export default function Home() {
+const Home = () => {
   return (
-    <main className="relative min-h-screen bg-black">
-      <div className="h-[100vh] w-[100vw] relative">
-      <div className="absolute inset-0 bg-gradient-to-b top-[-800px] from-[#0D0D33] via-[#101052] to-black">
-        <div className="absolute inset-0 flex items-center justify-center ">
-          {[...Array(7)].map((_, index) => (
+    <main className="bg-black">
+      <div className="w-[100vw] h-[120vh] md:w-[100vw] md:h-[120vh] overflow-hidden mb-0">
+      <div className="absolute inset-0 bg-gradient-to-b  from-[#0D0D33] via-[#101052] to-black"/>
+    
+
+      <div className="absolute inset-0 pointer-events-none">
+          {Array.from({ length: 100 }).map((_, i) => (
             <div
-              key={index}
-              className={`absolute rounded-full border border-[rgba(255,255,255,0.3)]`}
+              key={i}
+              className="absolute bg-white rounded-full opacity-10"
               style={{
-                width: `${400 + index * 200}px`,
-                height: `${400 + index * 200}px`,
+                width: `${Math.random() * 2 + 1}px`,
+                height: `${Math.random() * 2 + 1}px`,
+                top: `${Math.random() * 100}%`,
+                left: `${Math.random() * 100}%`,
+                opacity: Math.random() * 0.7 + 0.3,
+                animation: `twinkle ${Math.random() * 5 + 5}s infinite`,
               }}
-            >
-              
-              </div>
+            ></div>
           ))}
         </div>
-      </div>
+      <div className="absolute  z-50 md:top-[10px] md:left-[0px]">
+        <Image 
+                      src="/luna.svg"
+                      alt="Luna"
+                      width={600}
+                      height={600}
+                      className="relative md:left-[73%] md:top-[-60px] top-[-30px] left-[20px] animate-pulse z-50 "
+                    />
 
-<div className="sun">
-<Image 
-              src="/luna.svg"
-              alt="Luna"
-              width={600}
-              height={600}
-              className="relative left-[29%] top-[-50px] animate-pulse z-50 "
-            />
-
-<div className="bg-black rounded-full w-[400px] h-[400px] absolute left-[515px] top-[-200px] "> 
-</div>
-</div>
-          
-
-      <div className="relative">
-            <Image
-              src="/4.png"
-              alt="Moon"
-              width={80}
-              height={80}
-              className="absolute left-[930px] bottom-[460px] opacity-50 moon1 rotate-[-19deg] animate-orbit1 "
-            />
-           <Image
-          src="/2.png"
-          alt="Moon"
-          width={50}
-          height={50}
-          className="absolute  bottom-[450px] left-[345px] opacity-20 moon2 "
-        />
-           <Image
-          src="/3.png"
-          alt="Moon"
-          width={100}
-          height={100}
-          className="absolute  bottom-[260px] left-[300px] opacity-20 moon3"
-        />
-           <Image
-          src="/1.png"
-          alt="Moon"
-          width={80}
-          height={80}
-          className="absolute  bottom-[80px] left-[400px] opacity-60  transform rotate-[-10deg] moon4" 
-        />
-           <Image
-          src="/moon2.png"
-          alt="Moon"
-          width={150}
-          height={150}
-          className="absolute bottom-[300px] left-[1150px] opacity-50 moon5"
-        />
-          
-           <Image
-          src="/big.png"
-          alt="Moon"
-          width={250}
-          height={250}
-          className="absolute bottom-[-83px] left-[700px] opacity-50 transform rotate-[2deg] moon6"
-        />
-
-      </div>
-      </div>
-
-      <div className="flex justify-center items-center flex-col h-[100vh] w-[100vw]">
-        
-<Image 
-src='/typo.png'
-alt="type"
-width={1200}
-height={1200}
-/>
-
-          <div>
-
-        <div className="flex justify-center items-center gap-[18px]">
-                       <div className="bg-[#FC0160] h-[12px] w-[12px] rounded-full" />
-                    <div 
-                    
-                    className="bg-[#FC0160] h-[20px] w-[20px] rounded-full" />
-             <a href="mailto:your-email@example.com">
-             <button
-  className="
-    bg-[#FC0160] 
-    rounded-full 
-    p-3
-    px-8
-    flex 
-    items-center 
-    shadow-lg
-    text-black
-    font-bold
-  "
-  onClick={() => window.location.href = 'mailto:your-email@example.com'}
->
-  Join Waitlist
-</button>
-</a>
-
-                <div  className="bg-[#FC0160] h-[20px] w-[20px] rounded-full" />
-
-                <div  className="bg-[#FC0160] h-[12px] w-[12px] rounded-full" />
-
-                </div>
-
+        <div className="bg-black rounded-full md:w-[500px] md:h-[500px] w-[250px] h-[250px] absolute top-[-140px] left-[80px] md:left-[490px] md:top-[-300px] shadow-[0_0_200px_60px_rgba(255,0,0,0.2)] "> 
         </div>
+        </div>
+      <div className="relative md:top-[-750px] top-[-450px] md:h-[220vh] h-[150vh]  right-[250px] md:right-[50px] z-50 w-[220vw] md:w-[100vw] ">
+    <ol >
+  <li className="sun hidden md:visible"></li>
+  <li className="earth"></li>
+  <li className="mars"></li>
+  <li className="jupiter"></li>
+  <li className="saturn"></li>
+  <li className="uranus"></li>
+  <li className="venus
+  
+  "></li>
+  <li className="pluto"></li>
+</ol>
 </div>
-    </main>
+</div>
+<div className="flex justify-start md:justify-center items-center flex-col h-[50vh] md:h-[100vh] relative top-[-100px] md:top-[0px] w-[100vw] ">
+{Array.from({ length: 100 }).map((_, i) => (
+            <div
+              key={i}
+              className="absolute bg-white rounded-full"
+              style={{
+                width: `${Math.random() * 2 + 1}px`,
+                height: `${Math.random() * 2 + 1}px`,
+                top: `${Math.random() * 100}%`,
+                left: `${Math.random() * 100}%`,
+                opacity: Math.random() * 0.7 + 0.3,
+                animation: `twinkle ${Math.random() * 5 + 5}s infinite`,
+              }}
+            ></div>
+          ))}
+
+        <Image 
+        src='/typo.png'
+        alt="type"
+        width={1200}
+        height={1200}
+        />
+        
+                  <div>
+        
+                <div className="flex justify-center items-center gap-[18px]">
+                               <div className="bg-[#FC0160] h-[12px] w-[12px] rounded-full" />
+                            <div 
+                            
+                            className="bg-[#FC0160] h-[20px] w-[20px] rounded-full" />
+                     <a href="mailto:your-email@example.com">
+                     <button
+          className="
+            bg-[#FC0160] 
+            rounded-full 
+            p-3
+            px-8
+            flex 
+            items-center 
+            shadow-lg
+            text-black
+            font-bold
+          "
+          onClick={() => window.location.href = 'mailto:your-email@example.com'}
+        >
+          Join Waitlist
+        </button>
+        </a>
+        
+                        <div  className="bg-[#FC0160] h-[20px] w-[20px] rounded-full" />
+        
+                        <div  className="bg-[#FC0160] h-[12px] w-[12px] rounded-full" />
+        
+                        </div>
+        
+                </div>
+        </div>
+</main>
   );
-}
+};
+
+export default Home;
