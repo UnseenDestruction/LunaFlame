@@ -120,9 +120,9 @@ li {
   transform: rotate(150deg) translateY(-115px);
 }
 
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 1119px) {
   .uranus::after {
-    transform: rotate(150deg) translateY(-20px);
+    transform: rotate(150deg) translateY(-35px);
     filter: drop-shadow(0 -10px 15px #5f7cc8) drop-shadow(50px -50px 50px #8fa4e4);
   }
 }
@@ -136,7 +136,7 @@ li {
 
 
 
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 1119px) {
   .venus::after {
     transform: rotate(150deg) translateY(25px);
     filter: drop-shadow(0 -10px 15px #5f7cc8) drop-shadow(50px -50px 50px #8fa4e4);
