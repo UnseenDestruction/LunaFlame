@@ -84,10 +84,20 @@ li {
   
 }
 
-.mars::after {
-  transform: rotate(145deg) translateY(-16px);
-  opacity: 30%;
+@media screen and (min-width: 375px) {
+  .mars::after {
+    transform: rotate(90deg) translateY(-50px);
+    opacity: 30%;
+  }
 }
+
+@media screen and (max-width: 2000px) {
+  .mars::after {
+    transform: rotate(150deg) translateY(-10px);
+    opacity: 30%;
+  }
+}
+
 
 .jupiter {
   --b: url('/1.png');
@@ -96,9 +106,18 @@ li {
   --w: 4.8158cqi;
 }
 
-.jupiter::after {
-  transform: rotate(145deg) translateY(-18px);
-  opacity: 100%;
+@media screen and (min-width: 375px) {
+  .jupiter::after {
+    transform: rotate(150deg) translateY(-200px);
+    opacity: 80%;
+  }
+}
+
+@media screen and (max-width: 2000px) {
+  .jupiter::after {
+    transform: rotate(150deg) translateY(-10px);
+    opacity: 80%;
+  }
 }
 
 .saturn {
@@ -120,9 +139,9 @@ li {
   transform: rotate(150deg) translateY(-115px);
 }
 
-@media screen and (max-width: 1119px) {
+@media screen and (max-width: 1400px) {
   .uranus::after {
-    transform: rotate(150deg) translateY(-35px);
+    transform: rotate(150deg) translateY(-5px);
     filter: drop-shadow(0 -10px 15px #5f7cc8) drop-shadow(50px -50px 50px #8fa4e4);
   }
 }
@@ -136,14 +155,14 @@ li {
 
 
 
-@media screen and (max-width: 1119px) {
+@media screen and (max-width: 2000px) {
   .venus::after {
-    transform: rotate(150deg) translateY(25px);
+    transform: rotate(155deg) translateY(19px);
     filter: drop-shadow(0 -10px 15px #5f7cc8) drop-shadow(50px -50px 50px #8fa4e4);
   }
 }
 
-@media screen and (min-width: 1200px) {
+@media screen and (min-width: 375px) {
   .venus::after {
     transform: rotate(145deg) translateY(-60px);
     filter: drop-shadow(0 -20px 20px #6f8cd8) drop-shadow(50px -50px 50px #a1b4f4);

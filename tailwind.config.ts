@@ -9,10 +9,13 @@ export default {
   theme: {
     extend: {
       screens: {
-        'xs': { 'min': '432px', 'max': '459px' },
-        'xxs':  { 'min': '400px', 'max': '431px' },
-        'sssm':  { 'min': '460px', 'max': '519px' },
-        'ssm':  { 'min': '520px', 'max': '639px' },
+        'xs': { 'min': '426px', 'max': '459px' },
+        'xxs':  { 'min': '400px', 'max': '425px' },
+        'sssm':  { 'min': '460px', 'max': '478px' },
+        'ssmm':  { 'min': '479px', 'max': '519px' },
+        'ssm':  { 'min': '520px', 'max': '578px' },
+        'sssmm':  { 'min': '579px', 'max': '639px' },
+        'mmd':  { 'min': '831px', 'max': '1024px' },
       },
     },
   },
