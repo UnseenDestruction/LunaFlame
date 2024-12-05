@@ -8,7 +8,9 @@ export default function Email({
     email,
     setEmail,
     validity,
-    setValidity
+    setValidity,
+    goNext
+
 }: any) {
     const { colorScheme } = useColorScheme();
 

@@ -3,14 +3,15 @@ import { SafeAreaView, Text, View, TextInput, TouchableOpacity, ActivityIndicato
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Video, ResizeMode } from 'expo-av';
 import { BlurView } from 'expo-blur';
-import DreamStars from '@/assets/images/Dream/dreamStars.mp4';
-import Diamond from '@/assets/images/Dream/diamond.svg';
-import { fetchDreamResponse } from '@/lib/dream'; 
+
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useFonts } from 'expo-font';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 
+
+import DreamStars from '@/assets/images/Dream/dreamStars.mp4';
+import { fetchDreamResponse } from '@/lib/dream'; 
 
 export default function Main({ navigation, setIsLoading, setAnalysisResult }: any) {
   const [inputText, setInputText] = useState("");

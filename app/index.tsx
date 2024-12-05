@@ -14,6 +14,11 @@ import Analyze from '../components/Guidance/Dream/analyze';
 import Result from './tabs/guidance/Dresult';
 import MGuidance from './tabs/MainGuidance';
 import Capture from '@/components/Readings/palm/captured';
+import Crystal from './tabs/guidance/crystal';
+import Numerology from './tabs/guidance/numerology';
+import SignIn from './auth/sigIn';
+import SignUp from './auth/signUp';
+
 
 export default function Index() {
     const Stack = createStackNavigator();
@@ -34,6 +39,10 @@ export default function Index() {
                         <Stack.Screen name={'Nav'} component={Nav} />
                         <Stack.Screen name={'Dream'} component={Dream} />
                         <Stack.Screen name={'Palm'} component={Palm} />
+                        <Stack.Screen name={'Crystal'} component={Crystal} />
+                        <Stack.Screen name={'Numerology'} component={Numerology} />
+                        <Stack.Screen name={'SignIn'} component={SignIn} />
+                        <Stack.Screen name={'SignUp'} component={SignUp} />
                     </Stack.Navigator>
                 </NavigationContainer>
             </GestureHandlerRootView>

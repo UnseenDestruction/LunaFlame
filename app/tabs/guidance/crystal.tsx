@@ -3,6 +3,8 @@ import Main from '@/components/Guidance/Dream/main';
 import Analyze from '@/components/Guidance/Dream/analyze';
 import Result from '@/app/tabs/guidance/Dresult';
 import { useState, useEffect } from 'react';
+import React from 'react';
+import CMain from '@/components/Guidance/Crystal/main';
 
 export default function Crystal({ navigation }: any) {
   const [loading, setIsLoading] = useState(false);
@@ -40,7 +42,7 @@ export default function Crystal({ navigation }: any) {
           onBack={resetAnalysis}
         />
       ) : (
-        <Main
+        <CMain
           navigation={navigation}
           setIsLoading={setIsLoading}
           setAnalysisResult={setAnalysisResult}

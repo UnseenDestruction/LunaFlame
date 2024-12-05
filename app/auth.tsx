@@ -8,10 +8,13 @@ import Dream from '@/app/tabs/guidance/dream';
 import { Image } from 'react-native';
 import { useFonts } from 'expo-font';
 import { useRef, useEffect } from 'react';
+import { LinearGradient } from 'expo-linear-gradient';
 
 
 
 import Logo from '@/assets/images/logo.svg';
+import Electric from '@/assets/images/auth/electric.gif';
+
 
 
 
@@ -72,14 +75,35 @@ export default function Auth({ navigation }: any) {
     
     return (
         <SafeAreaView  style={{ backgroundColor: '#000', flex: 1 }}>
-            <Logo width={250} height={250} style={{
+          <View
+          style={{
+            position: 'relative',
+            top: 30,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          >
+          <Image 
+          source={Electric}
+          width={100}
+          height={100}
+          style={{
+            position: 'absolute',
+            width: 400,
+            height: 600,
+            top: -160,
+            zIndex: 2
+          }}
+          />
+            <Logo width={200} height={250} style={{
               justifyContent: 'center',
               alignItems: 'center',
               position: 'relative',
-              left: 80,
-              top: 125,
-              marginBottom: 280
+              marginBottom: 300,
+              top: 20,
+              zIndex: 2
             }} />
+            </View>
 
                     <View style={{justifyContent: 'center', alignItems: 'center'}}>
                       <View style={{
@@ -108,7 +132,7 @@ export default function Auth({ navigation }: any) {
                         color: "#B2AFFE",
                         fontSize: 15,
                         marginBottom: 10,
-                        fontFamily: "Bold",
+                        fontFamily: "Light",
                         textAlign: 'center',
                         opacity: 0.9,
                     }}
@@ -147,7 +171,7 @@ export default function Auth({ navigation }: any) {
                   }}
                 >
                     <TouchableOpacity
-                    onPress={() => navigation.navigate('Nav')}
+                       onPress={() => navigation.navigate('SignUp')}
           style={{
             backgroundColor: "#B2AFFE",
             borderRadius: 999,
@@ -164,7 +188,7 @@ export default function Auth({ navigation }: any) {
   <Text
     style={{
       fontSize: 13,
-      fontFamily: 'bold'
+      fontFamily: 'Medium'
     }}
   >
     GET STARTED
@@ -216,6 +240,7 @@ export default function Auth({ navigation }: any) {
                   }}
                 >
                     <TouchableOpacity
+                    onPress={() => navigation.navigate('SignIn')}
           style={{
             backgroundColor: "#252376",
             borderRadius: 999,

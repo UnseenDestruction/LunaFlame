@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppState, Text, TouchableOpacity, View } from 'react-native';
-
 import { useColorScheme } from 'nativewind';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as Progress from 'react-native-progress';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 import { supabase } from '@/lib/supabase';
 import { signUpWithEmail } from '@/lib/auth';
-import { useEffect } from 'react';
 
 import Name from '@/components/Auth/Name';
 import Email from '@/components/Auth/Email';
@@ -16,188 +16,260 @@ import TOB from '@/components/Auth/tob';
 import Gender from '@/components/Auth/gender';
 import Relation from '@/components/Auth/relation';
 import DOB from '@/components/Auth/dob';
+import Info from '@/components/Auth/info';
+
+const totalSteps = 6;
 
 AppState.addEventListener('change', (state) => {
     if (state === 'active') {
-        supabase.auth.startAutoRefresh()
+        supabase.auth.startAutoRefresh();
     } else {
-        supabase.auth.stopAutoRefresh()
+        supabase.auth.stopAutoRefresh();
     }
-})
+});
 
-export default function SignUp({
-    setMode
-}: any) {
-
+export default function SignUp({ setMode }: any) {
+    const [currentStep, setCurrentStep] = useState(1);
     const [progress, setProgress] = useState(0);
-
     const { colorScheme } = useColorScheme();
-
     const [isLoading, setIsLoading] = useState(false);
-
+    const [signupComplete, setSignupComplete] = useState(false); 
+   
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [dob, setDob] = useState('');
+    const [tob, setTob] = useState('');
+    const [lob, setLob] = useState('');
+    const [gender, setGender] = useState('');
+    const [relation, setRelation] = useState('');
 
     const [isEmailValid, setIsEmailValid] = useState(false);
     const [isPasswordValid, setIsPasswordValid] = useState(false);
 
+    const goNext = () => {
+        if (currentStep < totalSteps) {
+          setCurrentStep((prev) => prev + 1);
+        } else {
+          handleSignUp(); 
+        }
+      };
+    const goBack = () => setCurrentStep((prev) => Math.max(1, prev - 1))
+
     useEffect(() => {
         let interval: NodeJS.Timeout | null = null;
-      
-        if (isLoading) {
-          interval = setInterval(() => {
-            setProgress((prev) => (prev < 100 ? prev + 10 : 100));
-          }, 500);
-        } else if (!isLoading && interval) {
-          clearInterval(interval);
-          setProgress(0);
-        }
-      
-        return () => {
-          if (interval) {
-            clearInterval(interval)
-          }
-        };
-      }, [isLoading]);
 
+        if (isLoading) {
+            interval = setInterval(() => {
+                setProgress((prev) => (prev < 100 ? prev + 10 : 100));
+            }, 500);
+        } else if (!isLoading && interval) {
+            clearInterval(interval);
+            setProgress(0);
+        }
+
+        return () => {
+            if (interval) {
+                clearInterval(interval);
+            }
+        };
+    }, [isLoading]);
+
+    console.log(signupComplete)
+    console.log(currentStep)
+  
 
     const clearForm = () => {
         setName('');
         setEmail('');
         setPassword('');
-    }
+        setDob('');
+        setTob('');
+        setLob('');
+        setGender('');
+        setRelation('');
+    };
 
-    const handleSignUp = async (e: { preventDefault: () => void; }) => {
-        e.preventDefault();
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        password: '',
+        dob: '',
+        tob: '',
+        lob: '',
+        gender: '',
+        relation: '',
+    });
+
+    const sanitizedEmail = formData.email || 'unknown@gmail.com';
+const sanitizedPassword = formData.password || 'defaultPassword123'
+
+    const handleSignUp = async () => {
+        console.log("working")
         setIsLoading(true);
 
-        const result = await signUpWithEmail(name, email, password, LOB, TOB, Gender, Relation, DOB);
-
+        const result = await signUpWithEmail(
+            formData.name,
+           sanitizedEmail,
+           sanitizedPassword,
+            formData.dob,
+            formData.tob,
+            formData.lob,
+            formData.gender,
+            formData.relation
+        );
 
         setIsLoading(false);
+
         clearForm();
 
         if (result.success) {
-            setMode('signin');
-        }
-    }
+            setSignupComplete(true); 
+            setCurrentStep(totalSteps + 1)
+          }
+    };
+
+
+
+    
 
     return (
-        <View className={'flex w-full h-2/3 items-center justify-between'}>
-            <View className={'flex w-full items-center justify-center flex-1'}>
-                <Name
-                    name={name}
-                    setName={setName}
-                />
- <DOB
-                    name={name}
-                    setName={setName}
-                />
+        <View className="w-full h-2/3 items-center justify-between bg-black"
+        style={{
+            flex: 1,
+            backgroundColor: '#000'
+        }}
+        >
+<View
+  style={{
+    overflow: 'hidden',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 10,
+    borderRadius: 10,
+    padding: 10,
+    paddingVertical: 10,
+  }}
+>
+{!signupComplete && (
+  <TouchableOpacity onPress={goBack} disabled={currentStep === 1}>
+    <View
+      style={{
+        padding: 10,
+        backgroundColor: currentStep === 1 ? 'rgba(50, 50, 50, 0.5)' : 'rgba(50, 50, 50, 1)',
+        borderRadius: 999,
+      }}
+    >
+  <AntDesign
+    name="left"
+    size={24}
+    color={currentStep === 1 ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.5)'}
+  />
+    </View>
+  </TouchableOpacity>
+)}
 
-<TOB
-                    name={name}
-                    setName={setName}
-                />
+  <Text
+    style={{
+      color: '#B2AFFE',
+      fontSize: 30,
+      fontFamily: 'Light',
+    }}
+  >
+    {`${
+      currentStep === 1
+        ? 'ENTER THE NAME'
+        : currentStep === 2
+        ? 'DATE OF BIRTH'
+          : currentStep === 3
+        ? 'TIME OF BIRTH'
+          : currentStep === 4
+        ? 'LOCATION OF BIRTH'
+          : currentStep === 5
+        ? 'ADD GENDER'
+          : currentStep === 6
+        ? 'RELATIONSHIP STATUS'
+        : 'ANALYZING YOUR INFO'
+    }`}
+  </Text>
+</View>
+            <View style={{
+                flex: 1
+            }}>
+               <View
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: 20,
+                }}
+            >
 
-<LOB
-                    name={name}
-                    setName={setName}
-                />
-
-<Gender
-                    name={name}
-                    setName={setName}
-                />
-
-<Relation
-                    name={name}
-                    setName={setName}
-                />
-
-            
-
-                <Email
-                    mode={'signup'}
-                    email={email}
-                    setEmail={setEmail}
-                    validity={isEmailValid}
-                    setValidity={setIsEmailValid}
-                />
-
-                <Password
-                    mode={'signup'}
-                    password={password}
-                    setPassword={setPassword}
-                    validity={isPasswordValid}
-                    setValidity={setIsPasswordValid}
-                />
-            </View>
-
-            <View className={'flex w-full items-center gap-y-2 mb-5'}>
-                <TouchableOpacity
-                    className={'w-11/12 h-14 rounded-full flex justify-center items-center'}
-                    style={{ backgroundColor: '#4B57B2' }}
-                    onPress={handleSignUp}
-                    disabled={isLoading || name.length === 0 || !isEmailValid || !isPasswordValid}
-                >
-                    {isLoading ? (
-                           <View
-                           style={{
-                             alignItems: 'center',
-                             justifyContent: 'center',
-                             marginVertical: 20,
-                           }}
-                         >
-                           <Text
-                             style={{
-                               fontSize: 36,
-                               color: '#B2AFFE',
-                               marginBottom: 10,
-                               fontWeight: 'bold',
-                             }}
-                           >
-                             {progress}%
-                           </Text>
-                           <View
-                             style={{
-                               width: '80%',
-                               height: 8,
-                               backgroundColor: '#B2AFFE', 
-                               borderRadius: 5,
-                               overflow: 'hidden',
-                             }}
-                           >
-                             <LinearGradient
-                               colors={['#d1c4e9', '#9575cd']}
-                               start={{ x: 0, y: 0 }}
-                               end={{ x: 1, y: 0 }}
-                               style={{
-                                 height: '100%',
-                                 width: `${progress}%`,
-                                 borderRadius: 5,
-                               }}
-                             />
-                           </View>
-                         </View>
-                    ) : (
-                        <Text className={'font-poppins-medium text-lg text-white text-center'}>
-                            Register
-                        </Text>
-                    )}
-                </TouchableOpacity>
-
-                <View className='flex flex-row gap-1'>
-                    <Text className={`font-poppins-medium text-md ${colorScheme === 'dark' ? 'text-white' : 'text-black'}`}>
-                        Already have an account?
-                    </Text>
-                    <TouchableOpacity onPress={() => setMode('signin')}>
-                        <Text className={'font-poppins-medium text-md'} style={{ color: '#4B57B2' }}>
-                            Sign In
-                        </Text>
-                    </TouchableOpacity>
+                {!signupComplete && (
+                <View>
+                {[...Array(totalSteps)].map((_, index) => (
+                                    
+                                    <View
+                                        key={index}
+                                        style={{
+                                            flex: 1,
+                                            height: 2,
+                                            marginHorizontal: 4,
+                                            backgroundColor: index < currentStep ? '#B2AFFE' : '#E0E0E0',
+                                            borderRadius: 5,
+                                        }}
+                                    />
+                                ))}
                 </View>
+                )}  
+            </View>
+            {currentStep === 1 && (
+                    <Name
+                        name={formData.name}
+                        setName={(name: any) => setFormData((prev) => ({ ...prev, name }))}
+                        goNext={goNext}
+                    />
+                )}
+                {currentStep === 2 && (
+                    <DOB
+                        dob={formData.dob}
+                        setDob={(dob: any) => setFormData((prev) => ({ ...prev, dob }))}
+                        goNext={goNext}
+                    />
+                )}
+                {currentStep === 3 && (
+                    <TOB
+                        tob={formData.tob}
+                        setTob={(tob: any) => setFormData((prev) => ({ ...prev, tob }))}
+                        goNext={goNext}
+                    />
+                )}
+                {currentStep === 4 && (
+                    <LOB
+                        lob={formData.lob}
+                        setLob={(lob: any) => setFormData((prev) => ({ ...prev, lob }))}
+                        goNext={goNext}
+                    />
+                )}
+                {currentStep === 5 && (
+                    <Gender
+                        gender={formData.gender}
+                        setGender={(gender: any) => setFormData((prev) => ({ ...prev, gender }))}
+                        goNext={goNext}
+                    />
+                )}
+                {currentStep === 6 && (
+                    <Relation
+                        relation={formData.relation}
+                        setRelation={(relation: any) => setFormData((prev) => ({ ...prev, relation }))}
+                        goNext={handleSignUp}
+                    />
+                )}
+                {currentStep === 7 && (
+                    <Info userData={formData} /> 
+                )}
             </View>
         </View>
-    )
+    );
 }

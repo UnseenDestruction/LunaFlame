@@ -10,6 +10,7 @@ import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { GuidanceStackParamList } from '@/app/tabs/MainGuidance';
 import Number from '@/assets/images/numerology/number.svg'
 import DreamStars from '@/assets/images/Dream/dreamStars.mp4';
+import CMain from '@/components/Guidance/Crystal/main';
 
 
 export default function Guidance() {
@@ -34,7 +35,7 @@ export default function Guidance() {
         <SafeAreaProvider style={{ flex: 1, backgroundColor: '#000', padding: 5, gap: 18 }}>
              <Text style={{ color: '#B2AFFE', fontSize: 30,  fontFamily: 'Medium',  }}>GUIDANCE</Text>
 <TouchableOpacity
-  onPress={() => navigation.navigate('Analyze')}
+  onPress={() => navigation.navigate('Crystal')}
   style={{
     borderRadius: 15,
     overflow: 'hidden',
@@ -87,7 +88,7 @@ export default function Guidance() {
 
            
 <TouchableOpacity
-     onPress={() => navigation.navigate('Result')}
+     onPress={() => navigation.navigate('Numerology')}
 style={{ 
     borderRadius: 15, overflow: 'hidden', width: '100%', height: 200,  borderColor: '#FC016066',
     borderWidth: 0.8

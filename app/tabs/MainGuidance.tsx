@@ -8,13 +8,14 @@ import Result from './guidance/Dresult';
 import Main from '@/components/Guidance/Dream/main';
 import Guidance from './guidance/guidance';
 import Dream from './guidance/dream';
+import CMain from '@/components/Guidance/Crystal/main';
+import NMain from '@/components/Guidance/Numero/main';
 
 export type GuidanceStackParamList = {
   Guidance: undefined;
-  Dream: undefined;
-  Analyze: undefined;
-  Result: undefined;
-  Main: undefined;
+  Crystal: undefined;
+  Numerology: undefined
+  Dream: undefined
 };
 
 export default function MGuidance() {
@@ -33,9 +34,6 @@ export default function MGuidance() {
           }}
         >
           <Stack.Screen name="Guidance" component={Guidance} />
-          <Stack.Screen name="Main" component={Main} />
-          <Stack.Screen name="Analyze" component={Analyze} />
-          <Stack.Screen name="Result" component={Result} />
         </Stack.Navigator>
       </GestureHandlerRootView>
     </SafeAreaProvider>

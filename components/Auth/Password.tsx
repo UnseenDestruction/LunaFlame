@@ -3,10 +3,10 @@ import { TextInput, View, Text, TouchableOpacity } from 'react-native';
 
 import { useColorScheme } from 'nativewind';
 
-import Show from '@/assets/images/Show.svg';
-import ShowDark from '@/assets/images/ShowDark.svg';
-import Hide from '@/assets/images/Hide.svg';
-import HideDark from '@/assets/images/HideDark.svg';
+import Show from '@/assets/images/auth/Show.svg';
+import ShowDark from '@/assets/images/auth/ShowDark.svg';
+import Hide from '@/assets/images/auth/Hide.svg';
+import HideDark from '@/assets/images/auth/HideDark.svg';
 
 export default function Password({
     mode,
