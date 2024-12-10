@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 
 type Star = {
@@ -16,19 +17,39 @@ type Star = {
 
 const Home = () => {
 
+
+
+
   const [stars, setStars] = useState<Star[]>([]);
   const [showInput, setShowInput] = useState(false);
   const [email, setEmail] = useState("");
 
-  const handleSubmit = () => {
+  console.log(email)
+
+  const handleSubmit = async () => {
     if (!email.trim()) {
       alert("Please enter a valid email address.");
       return;
     }
-    alert(`Thank you for joining the waitlist, ${email}!`);
-    setEmail(""); 
-    setShowInput(false); 
+    try {
+      await axios.post('/api/email', { email }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      console.log(email)
+    } catch (error: unknown) {
+      console.log(error)
+    } finally {
+      alert(`Thank you for joining the waitlist, ${email}!`);
+      setEmail(""); 
+      setShowInput(false); 
+    }
+   
   };
+
+
 
   useEffect(() => {
     const generateStars = () =>
