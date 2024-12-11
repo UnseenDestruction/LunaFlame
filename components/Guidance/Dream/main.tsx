@@ -11,7 +11,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 
 import DreamStars from '@/assets/images/Dream/dreamStars.mp4';
-import { fetchDreamResponse } from '@/lib/dream'; 
+import { fetchDreamResponse } from '@/lib/guidance';
 
 export default function Main({ navigation, setIsLoading, setAnalysisResult }: any) {
   const [inputText, setInputText] = useState("");

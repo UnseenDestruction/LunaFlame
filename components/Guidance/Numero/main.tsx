@@ -5,7 +5,7 @@ import { Video } from 'expo-av';
 import { BlurView } from 'expo-blur';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useFonts } from 'expo-font';
-import { fetchDreamResponse } from '@/lib/dream';
+import { fetchDreamResponse } from '@/lib/guidance';
 
 import Name from '@/components/Auth/Name';
 import DOB from '@/components/Auth/dob';

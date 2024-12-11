@@ -8,6 +8,8 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { supabase } from '@/lib/supabase';
 import { signUpWithEmail } from '@/lib/auth';
 
+import { fetchInfo } from '@/lib/info';
+
 import Name from '@/components/Auth/Name';
 import Email from '@/components/Auth/Email';
 import Password from '@/components/Auth/Password';
@@ -17,6 +19,24 @@ import Gender from '@/components/Auth/gender';
 import Relation from '@/components/Auth/relation';
 import DOB from '@/components/Auth/dob';
 import Info from '@/components/Auth/info';
+
+type SignUpRequest = {
+    name: string;
+    dob: string;    
+    tob: string;     
+    lob: string;     
+    gender: string;
+    relation: string;
+    email: string;
+    password: string
+  };
+  
+  type SignUpResponse = {
+    status: 'success' | 'error';
+    message: string;
+    content?: string;
+  };
+
 
 const totalSteps = 6;
 
@@ -28,13 +48,17 @@ AppState.addEventListener('change', (state) => {
     }
 });
 
+
+
+
+
 export default function SignUp({ setMode }: any) {
     const [currentStep, setCurrentStep] = useState(1);
     const [progress, setProgress] = useState(0);
     const { colorScheme } = useColorScheme();
     const [isLoading, setIsLoading] = useState(false);
     const [signupComplete, setSignupComplete] = useState(false); 
-   
+    const [info, setInfo] = useState<{ content: string }>({ content: "" });
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -46,6 +70,9 @@ export default function SignUp({ setMode }: any) {
 
     const [isEmailValid, setIsEmailValid] = useState(false);
     const [isPasswordValid, setIsPasswordValid] = useState(false);
+
+
+    
 
     const goNext = () => {
         if (currentStep < totalSteps) {
@@ -104,32 +131,50 @@ export default function SignUp({ setMode }: any) {
     const sanitizedEmail = formData.email || 'unknown@gmail.com';
 const sanitizedPassword = formData.password || 'defaultPassword123'
 
-    const handleSignUp = async () => {
-        console.log("working")
-        setIsLoading(true);
-
-        const result = await signUpWithEmail(
-            formData.name,
-           sanitizedEmail,
-           sanitizedPassword,
-            formData.dob,
-            formData.tob,
-            formData.lob,
-            formData.gender,
-            formData.relation
-        );
-
-        setIsLoading(false);
-
-        clearForm();
-
-        if (result.success) {
-            setSignupComplete(true); 
-            setCurrentStep(totalSteps + 1)
-          }
-    };
-
-
+const handleSignUp = async () => {
+    setIsLoading(true);
+  
+    try {
+      const requestData: SignUpRequest = {
+        name: formData.name,
+        email:  '',
+        password: '',
+        dob: formData.dob,
+        tob: formData.tob,
+        lob: formData.lob,
+        gender: formData.gender,
+        relation: formData.relation,
+      };
+  
+      const result = await signUpWithEmail(
+        requestData.name,
+        requestData.email || 'unknown@gmail.com',
+        requestData.password || 'defaultPassword123',
+        requestData.dob,
+        requestData.tob,
+        requestData.lob,
+        requestData.gender,
+        requestData.relation
+      );
+  
+      if (result.success) {
+        setSignupComplete(true);
+        setCurrentStep(totalSteps + 1);
+  
+        const response = await fetchInfo(requestData);
+          setInfo(response);
+          console.log(response)
+       
+      } else {
+        console.error("Signup failed", result.message );
+      }
+    } catch (error) {
+      console.error("Error during sign up:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
 
     
 
@@ -197,7 +242,9 @@ const sanitizedPassword = formData.password || 'defaultPassword123'
             <View style={{
                 flex: 1
             }}>
-               <View
+
+                {!signupComplete && (
+                    <View
                 style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
@@ -205,11 +252,7 @@ const sanitizedPassword = formData.password || 'defaultPassword123'
                     marginBottom: 20,
                 }}
             >
-
-                {!signupComplete && (
-                <View>
                 {[...Array(totalSteps)].map((_, index) => (
-                                    
                                     <View
                                         key={index}
                                         style={{
@@ -221,9 +264,8 @@ const sanitizedPassword = formData.password || 'defaultPassword123'
                                         }}
                                     />
                                 ))}
-                </View>
-                )}  
             </View>
+                )}
             {currentStep === 1 && (
                     <Name
                         name={formData.name}
@@ -267,7 +309,9 @@ const sanitizedPassword = formData.password || 'defaultPassword123'
                     />
                 )}
                 {currentStep === 7 && (
-                    <Info userData={formData} /> 
+                    <Info userData={formData} 
+                            info={info}
+                    /> 
                 )}
             </View>
         </View>

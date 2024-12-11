@@ -9,7 +9,7 @@ export async function signInWithEmail(
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
     const { error: updateError } = await supabase
-        .from('profile')
+        .from('user')
         .update({ lastSignedIn: new Date().toISOString() })
         // @ts-ignore
         .eq('userId', data.user.id);
@@ -41,9 +41,9 @@ export async function signUpWithEmail(
         options: {
             data: {
                 name,
-                dob: dob  || 'N/A',
-                lob: lob  || 'N/A',
-                tob: tob || 'N/A',
+                dob: dob  || 'none',
+                lob: lob  || 'none',
+                tob: tob || 'none',
                 gender,
                 relation,
             },
@@ -68,9 +68,9 @@ export async function signUpWithEmail(
          userId,
         sanitizedEmail,
         name,
-        dob  || 'N/A',
-        tob || 'N/A',
-        lob  || 'N/A',
+        dob  || '',
+        tob || '',
+        lob  || '',
         gender,
         relation
     );
@@ -99,7 +99,7 @@ export async function addUserToDatabase(
 
 
     const { error } = await supabase
-        .from('profile')
+        .from('user')
         .insert([{
             userId: userId,
             email: email,
