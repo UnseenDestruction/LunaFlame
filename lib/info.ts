@@ -2,9 +2,6 @@ import axios from "axios";
 
 export async function fetchInfo(data: any) {
 
-    
-
-    console.log("here is the connector:", data)
 
     try {
       const flatData = {
@@ -39,4 +36,32 @@ export async function fetchInfo(data: any) {
       throw error;
     }
   }
+
+
+
+  export async function HoroScope(data: any) {
+
+
+    try {
+      const response = await axios.post(
+        'http://192.168.5.122:3000/api/horoscope',
+
+        {
+          headers: {
+            'x-api-key': 'luna549',
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+  
+      return response.data;
+      
+
+
+    } catch (error) {
+      console.error('Failed to fetch dream response', error);
+      throw error;
+    }
+  }
+
   

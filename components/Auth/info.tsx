@@ -12,6 +12,9 @@ import { useFonts } from 'expo-font';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Image } from 'react-native';
 import { ResizeMode } from 'expo-av';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { GuidanceStackParamList } from '@/app/tabs/MainGuidance';
+import Prof from '@/app/tabs/profile/prof';
 
 
 import Ascendant from '@/assets/images/zodiac/symbol/zodSym.svg';
@@ -34,10 +37,16 @@ const zodiacImages: Record<string, any> = {
   Pisces: require('@/assets/images/zodiac/Pisces0.png'),
 };
 
-export default function Info({ userData, goNext, info }: any) {
+
+
+export default function Info({ userData,  info,  }: any) {
   const { colorScheme } = useColorScheme();
   const [isLoading, setIsLoading] = useState(false);
   const scale = useRef(new Animated.Value(1)).current;
+  const [progress, setProgress] = useState(0);
+
+  const navigation = useNavigation<NavigationProp<GuidanceStackParamList>>();
+
 
   const [loaded] = useFonts({
     Light: require('@/assets/fonts/Light.ttf'),
@@ -66,6 +75,20 @@ export default function Info({ userData, goNext, info }: any) {
     pulse();
   }, [scale]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setProgress((prev) => {
+        const newProgress = prev + 10;
+        if (newProgress >= 100) {
+          clearInterval(interval);
+          setIsLoading(false); 
+        }
+        return newProgress;
+      });
+    }, 300);
+  }, []);
+
+
   if (!loaded) {
     return (
       <SafeAreaProvider style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#000' }}>
@@ -79,17 +102,17 @@ export default function Info({ userData, goNext, info }: any) {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1, padding: 20, backgroundColor: colorScheme === 'dark' ? '#000' : '#fff' }}>
-        <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
           <Text style={{ color: '#FFC2D9', fontSize: 20 }}>{info.Name}</Text>
           <View>
-            <View style={{ flexDirection: 'row', opacity: 0.8 }}>
-              <Text style={{ color: '#FFC2D9', fontSize: 20, textAlign: 'center' }}>{userData.dob}</Text>
+            <View style={{ flexDirection: 'row', opacity: 0.8, marginTop: 10 }}>
+              <Text style={{ color: '#FFC2D9', fontSize: 14, textAlign: 'center' }}>{userData.dob}</Text>
               <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 2 }}>
                 <View style={{ backgroundColor: '#FFC2D9', borderRadius: 9999, width: 4, height: 4 }} />
                 <View style={{ backgroundColor: '#FFC2D9', borderRadius: 9999, width: 10, height: 10 }} />
                 <View style={{ backgroundColor: '#FFC2D9', borderRadius: 9999, width: 4, height: 4 }} />
               </View>
-              <Text style={{ color: '#FFC2D9', fontSize: 20, textAlign: 'center' }}>{userData.tob}</Text>
+              <Text style={{ color: '#FFC2D9', fontSize: 14, textAlign: 'center' }}>{userData.tob}</Text>
             </View>
           </View>
 
@@ -101,29 +124,38 @@ export default function Info({ userData, goNext, info }: any) {
                 resizeMode={ResizeMode.COVER} 
               />
             )}
-            <Text style={{ fontFamily: 'Bold', color: '#fff', textAlign: 'center', fontSize: 15, opacity: 1 }}>
-              Sun sign: <Text style={{
-                color: '#E47676',
-                fontSize: 20
-              }}>{info.SunSign}</Text>
+            <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 5}}>
+            <Text style={{ fontFamily: 'Bold', color: '#fff', textAlign: 'center', fontSize: 15, opacity: 0.5 }}>
+              Sun sign: 
             </Text>
+            <Text style={{
+                color: '#E47676',
+                fontSize: 20,
+                textAlign: 'center',
+                fontFamily: 'Bold',
+              }}>{info.SunSign}</Text>
+            </View>
           </View>
           
           <View style={{
             justifyContent: 'center',
             alignItems: 'center',
-            gap: 20
+            gap: 20,
+            marginTop: 40
           }}>
             <View style={{
                 flexDirection: 'row',
                 gap: 100
             }}>
             <View style={{
-                flexDirection: 'row'
+                flexDirection: 'row',
+                gap: 10
             }}>
               <Ascendant width={50} height={50} />
               <View style={{
-                flexDirection: 'column'
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center'
               }}>
               <Text style={{
                 color: '#B2AFFE',
@@ -134,7 +166,7 @@ export default function Info({ userData, goNext, info }: any) {
                 {info.Ascendant}
               </Text>
               <Text style={{
-                    opacity: 20,
+                    opacity: 0.5,
                     color: '#B2AFFE',
                     fontFamily: 'Bold',
                     fontSize: 12,
@@ -143,11 +175,14 @@ export default function Info({ userData, goNext, info }: any) {
               </View>
             </View>
             <View style={{
-                flexDirection: 'row'
+                flexDirection: 'row',
+                gap: 4
             }}>
-              <Ascendant width={50} height={50} />
+             
               <View style={{
-                flexDirection: 'column'
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center'
               }}>
               <Text style={{
                 color: '#B2AFFE',
@@ -155,26 +190,28 @@ export default function Info({ userData, goNext, info }: any) {
                 fontSize: 20,
                 
               }}>
-                {info.Ascendant}
+                {info.Moon}
               </Text>
               <Text style={{
-                    opacity: 20,
+                    opacity: 0.5,
                     color: '#B2AFFE',
                     fontFamily: 'Bold',
                     fontSize: 12,
-                }}> Ascendant
+                }}> Moon Sign
                 </Text>
               </View>
+              <Moon width={50} height={50} />
             </View>
             </View>
             <View style={{
                 flexDirection: 'row',
-                gap: 100
+                gap: 140
             }}>
             <View style={{
-                flexDirection: 'row'
+                flexDirection: 'row',
+                gap: 10
             }}>
-              <Ascendant width={50} height={50} />
+              <Element width={50} height={50} />
               <View style={{
                 flexDirection: 'column'
               }}>
@@ -184,23 +221,25 @@ export default function Info({ userData, goNext, info }: any) {
                 fontSize: 20,
                 
               }}>
-                {info.Ascendant}
+                {info.Element}
               </Text>
               <Text style={{
-                    opacity: 20,
+                    opacity: 0.5,
                     color: '#B2AFFE',
                     fontFamily: 'Bold',
                     fontSize: 12,
-                }}> Ascendant
+                }}> Element
                 </Text>
               </View>
             </View>
             <View style={{
-                flexDirection: 'row'
+                flexDirection: 'row',
+                gap: 10
             }}>
-              <Ascendant width={50} height={50} />
               <View style={{
-                flexDirection: 'column'
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center'
               }}>
               <Text style={{
                 color: '#B2AFFE',
@@ -208,19 +247,147 @@ export default function Info({ userData, goNext, info }: any) {
                 fontSize: 20,
                 
               }}>
-                {info.Ascendant}
+                {userData.gender}
               </Text>
               <Text style={{
-                    opacity: 20,
+                    opacity: 0.5,
                     color: '#B2AFFE',
                     fontFamily: 'Bold',
                     fontSize: 12,
-                }}> Ascendant
+                }}> Popularity
                 </Text>
               </View>
+              <Male width={50} height={50} />
             </View>
             </View>
           </View>
+          <View style={{ width: '100%', marginTop: 200 }}>
+  {progress < 100 ? (
+    <>
+      <View
+        style={{
+          width: '100%',
+          height: 8,
+          backgroundColor: '#fff',
+          borderRadius: 10,
+          overflow: 'hidden',
+          position: 'relative',
+        }}
+      >
+        <View
+          style={{
+            width: `${progress}%`, 
+            height: '100%',
+            backgroundColor: '#B2AFFE',
+            borderRadius: 10,
+            shadowColor: '#B2AFFE',
+            shadowOffset: { width: 0, height: 0 },
+            shadowOpacity: 0.8,
+            shadowRadius: 10,
+          }}
+        />
+      </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginTop: 10,
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 22,
+            fontFamily: 'Bold',
+            color: '#B2AFFE',
+          }}
+        >
+          {progress}%
+        </Text>
+        <Text
+          style={{
+            fontSize: 16,
+            fontFamily: 'Light',
+            color: '#fff',
+            opacity: 0.8,
+          }}
+        >
+          Please wait a minute
+        </Text>
+      </View>
+    </>
+  ) : (
+    <View style={{
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: 18
+      }}>
+         <View style={{
+        backgroundColor: '#B2AFFE',
+        height: 12,
+        width: 12,
+        borderRadius: 9999
+      }}/>
+      <View style={{
+        backgroundColor: '#B2AFFE',
+        height: 20,
+        width: 20,
+        borderRadius: 9999
+      }}/>
+
+    
+    
+      <Animated.View
+    style={{
+      borderColor: "#B2AFFE52",
+      borderWidth: 1,
+      borderRadius: 999,
+      padding: 5,
+      transform: [{ scale }],
+    }}
+  >
+      <TouchableOpacity
+  onPress={() => navigation.navigate('Nav')}
+style={{
+backgroundColor: "#B2AFFE",
+borderRadius: 999,
+paddingVertical: 12,
+paddingHorizontal: 80,
+alignItems: "center",
+shadowColor: "#000",
+shadowOffset: { width: 0, height: 4 },
+shadowOpacity: 0.25,
+shadowRadius: 4.65,
+elevation: 8,
+}}
+>
+<Text
+style={{
+fontSize: 13,
+fontFamily: 'Bold'
+}}
+>
+Continue
+</Text>
+</TouchableOpacity>
+  </Animated.View>
+  <View style={{
+        backgroundColor: '#B2AFFE',
+        height: 20,
+        width: 20,
+        borderRadius: 9999
+      }}/>
+
+  <View style={{
+        backgroundColor: '#B2AFFE',
+        height: 12,
+        width: 12,
+        borderRadius: 9999
+      }}/>
+  </View>
+  )}
+</View>
         </View>
       </SafeAreaView>
     </SafeAreaProvider>

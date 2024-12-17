@@ -19,6 +19,8 @@ import Gender from '@/components/Auth/gender';
 import Relation from '@/components/Auth/relation';
 import DOB from '@/components/Auth/dob';
 import Info from '@/components/Auth/info';
+import Prof from '../tabs/profile/prof';
+import { opacity } from 'react-native-reanimated/lib/typescript/Colors';
 
 type SignUpRequest = {
     name: string;
@@ -309,11 +311,15 @@ const handleSignUp = async () => {
                     />
                 )}
                 {currentStep === 7 && (
-                    <Info userData={formData} 
+                          <Info userData={formData} 
                             info={info}
                     /> 
+
                 )}
             </View>
+
+      
+
         </View>
     );
 }

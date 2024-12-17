@@ -14,8 +14,9 @@ import NMain from '@/components/Guidance/Numero/main';
 export type GuidanceStackParamList = {
   Guidance: undefined;
   Crystal: undefined;
-  Numerology: undefined
-  Dream: undefined
+  Numerology: undefined;
+  Dream: undefined;
+  Nav: undefined;
 };
 
 export default function MGuidance() {
