@@ -76,17 +76,23 @@ export default function Info({ userData,  info,  }: any) {
   }, [scale]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        const newProgress = prev + 10;
-        if (newProgress >= 100) {
-          clearInterval(interval);
-          setIsLoading(false); 
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        for (let i = 1; i <= 10; i++) {
+          await new Promise((resolve) => setTimeout(resolve, 300));
+          setProgress(i * 10); 
         }
-        return newProgress;
-      });
-    }, 300);
+      } catch (error) {
+        console.error('Failed to fetch data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
+
 
 
   if (!loaded) {
