@@ -19,7 +19,7 @@ async function analyzeImageWithOpenAI(Image: any) {
       },
       {
         role: "user",
-        content: `I have an image of a palm provided in base64 format. Use your expertise to generate an analysis for:
+        content: `I have an image of a palm. Use your expertise to generate an analysis for:
         - Health
         - Love
         - Fate
