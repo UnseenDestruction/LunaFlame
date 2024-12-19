@@ -11,6 +11,8 @@ export type ReadingsParamList = {
   Readings: undefined;
   Dream: undefined;
   Palm: undefined
+  Birth: undefined
+  Tarrot: undefined
 };
 
 export default function MReadings() {

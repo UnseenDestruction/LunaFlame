@@ -95,6 +95,8 @@ style={{
   </View>
 </TouchableOpacity>
 <TouchableOpacity
+  onPress={() => navigation.navigate('Birth')}
+
 style={{ 
   borderRadius: 15,
   overflow: 'hidden', 
@@ -144,6 +146,7 @@ style={{
 </TouchableOpacity>
 
 <TouchableOpacity
+  onPress={() => navigation.navigate('Tarrot')}
 style={{ 
   borderRadius: 15,
   overflow: 'hidden', 

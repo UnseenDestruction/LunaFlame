@@ -18,6 +18,8 @@ import Crystal from './tabs/guidance/crystal';
 import Numerology from './tabs/guidance/numerology';
 import SignIn from './auth/sigIn';
 import SignUp from './auth/signUp';
+import Tarrot from './tabs/readings/tarrot/tarrot';
+import Birth from './tabs/readings/birth/birth';
 
 
 export default function Index() {
@@ -39,7 +41,9 @@ export default function Index() {
                         <Stack.Screen name={'Nav'} component={Nav} />
                         <Stack.Screen name={'Dream'} component={Dream} />
                         <Stack.Screen name={'Palm'} component={Palm} />
+                        <Stack.Screen name={'Birth'} component={Birth} />
                         <Stack.Screen name={'Crystal'} component={Crystal} />
+                        <Stack.Screen name={'Tarrot'} component={Tarrot} />
                         <Stack.Screen name={'Numerology'} component={Numerology} />
                         <Stack.Screen name={'SignIn'} component={SignIn} />
                         <Stack.Screen name={'SignUp'} component={SignUp} />
@@ -47,5 +51,5 @@ export default function Index() {
                 </NavigationContainer>
             </GestureHandlerRootView>
         </SafeAreaProvider>
-    );
+    ); 
 }
