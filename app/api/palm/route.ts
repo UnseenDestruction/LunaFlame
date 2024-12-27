@@ -7,38 +7,60 @@ const openai = new OpenAI({ apiKey: GPT });
 
 async function analyzeImageWithOpenAI(Image: any) {
 
+  console.log("Analyzing image data:", Image);
 
-  console.log(Image)
+  
 
   const response = await openai.chat.completions.create({
     model: "gpt-4o",
     messages: [
       {
         role: "system",
-        content: "You are an expert palm reader and astrologer specializing in analyzing images of palms to extract insights about health, love, fate, and life.",
+        content: "You are an expert palm reader and astrologer specializing in analyzing palm images. Respond in a structured JSON format without any additional text.",
       },
       {
         role: "user",
-        content: `I have an image of a palm. Use your expertise to generate an analysis for:
-        - Health
-        - Love
-        - Fate
-        - Life
-        - Career
-        - Strengths and Weaknesses
-        - Personality
-      
-        Provide a structured response.
-        The image data is as follows: 
-        `,
+        content: [
+          {type: "text", text:
+`I have an image of a palm. Use your expertise to generate an analysis for:
+          - Health
+          - Love
+          - Fate
+          - Life
+          - Career
+          - Strengths and Weaknesses
+          - Personality
+        Additionally, I want you to provide coordinates for dots and lines in the palm.
+
+          Respond only in JSON format as follows:
+  
+          {
+            "health": "Your health analysis...",
+            "love": "Your love analysis...",
+            "fate": "Your fate analysis...",
+            "life": "Your life analysis...",
+            "career": "Your career analysis...",
+            "characteristics": {
+              "strengths": ["list of strengths"],
+              "weaknesses": ["list of weaknesses"],
+              "personality": "Your personality analysis..."
+            }
+          }
+        `
+          },
+          {type: "image_url", image_url: {
+            url: `${Image}`
+          }}
+        ]
       },
     ],
     max_tokens: 1000,
   });
-
   
 
   const content = response.choices[0].message.content;
+
+  console.log("here is the content:", content)
 
   if (!content) {
     throw new Error("No content returned from OpenAI.");
@@ -50,28 +72,40 @@ async function analyzeImageWithOpenAI(Image: any) {
 }
 
 function parseOpenAIAnalysis(content: string) {
-  const health = content.match(/- Health: (.+)/)?.[1] || "No data.";
-  const love = content.match(/- Love: (.+)/)?.[1] || "No data.";
-  const fate = content.match(/- Fate: (.+)/)?.[1] || "No data.";
-  const life = content.match(/- Life: (.+)/)?.[1] || "No data.";
-  const career = content.match(/- Career: (.+)/)?.[1] || "No data.";
-  const strengths = content.match(/- Strengths: (.+)/)?.[1]?.split(", ") || [];
-  const weaknesses = content.match(/- Weaknesses: (.+)/)?.[1]?.split(", ") || [];
-  const personality = content.match(/- Personality: (.+)/)?.[1] || "No data.";
+  try {
+    const cleanedContent = content.replace(/```json\s*|```/g, "").trim();
+    const analysis = JSON.parse(cleanedContent);
 
-  return {
-    health,
-    love,
-    fate,
-    life,
-    career,
-    characteristics: {
-      strengths,
-      weaknesses,
-      personality,
-    },
-  };
+    return {
+      coordinates: analysis.coordinates || "No data.",
+      health: analysis.health || "No data.",
+      love: analysis.love || "No data.",
+      fate: analysis.fate || "No data.",
+      life: analysis.life || "No data.",
+      career: analysis.career || "No data.",
+      characteristics: {
+        strengths: analysis.characteristics?.strengths || [],
+        weaknesses: analysis.characteristics?.weaknesses || [],
+        personality: analysis.characteristics?.personality || "No data.",
+      },
+    };
+  } catch (error) {
+    console.error("Error parsing JSON response:", error, content);
+    return {
+      health: "No data.",
+      love: "No data.",
+      fate: "No data.",
+      life: "No data.",
+      career: "No data.",
+      characteristics: {
+        strengths: [],
+        weaknesses: [],
+        personality: "No data.",
+      },
+    };
+  }
 }
+
 
 function calculateDynamicPercentages(analysis: any) {
   const totalAttributes = Object.keys(analysis).length;
@@ -107,6 +141,8 @@ export async function POST(request: Request) {
 
     const visionAnalysis = await analyzeImageWithOpenAI(Image);
 
+    console.log("here is the:", visionAnalysis)
+
     const percentages = calculateDynamicPercentages(visionAnalysis);
 
     const response = await openai.chat.completions.create({
@@ -114,7 +150,7 @@ export async function POST(request: Request) {
       messages: [
         {
           role: "system",
-          content: "You are a skilled astrologer and palm reader. Provide a detailed analysis based on the user's palm image.",
+          content: `You are a skilled astrologer and palm reader. Provide a detailed analysis based on the user's palm image.`,
         },
         {
           role: "user",

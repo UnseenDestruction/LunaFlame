@@ -64,6 +64,7 @@ export async function POST(request: any) {
           content: `Based on the following data, generate a detailed astrological analysis including:
             - Horoscope
             - Affirmation
+            - Today's Date
             - Today's Tips
             - Today's Matches
             - Lunar Calendar
