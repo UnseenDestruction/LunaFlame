@@ -1,5 +1,6 @@
 import { supabase } from './supabase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { addHoroscopeData } from './info';
 
 
 export async function signInWithEmail(
@@ -63,6 +64,24 @@ export async function signUpWithEmail(
     }
 
     const userId = data.session.user.id;
+
+    // const horoscopeData = ({
+    //     ascendant,
+    //     element,
+    //     moon,
+    //     name,
+    //     sunSign,
+    //     content,
+    //     message,
+    //     status,
+    // });
+    
+
+
+//     const  horoResponse =  await addHoroscopeData(
+//         userId,
+//         horoscopeData
+//    );
 
    const  dbResponse =  await addUserToDatabase(
          userId,

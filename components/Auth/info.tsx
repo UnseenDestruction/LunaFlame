@@ -14,7 +14,6 @@ import { Image } from 'react-native';
 import { ResizeMode } from 'expo-av';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { GuidanceStackParamList } from '@/app/tabs/MainGuidance';
-import Prof from '@/app/tabs/profile/prof';
 
 
 import Ascendant from '@/assets/images/zodiac/symbol/zodSym.svg';
@@ -80,7 +79,7 @@ export default function Info({ userData,  info,  }: any) {
       try {
         setIsLoading(true);
         for (let i = 1; i <= 10; i++) {
-          await new Promise((resolve) => setTimeout(resolve, 300));
+          await new Promise((resolve) => setTimeout(resolve, 1000));
           setProgress(i * 10); 
         }
       } catch (error) {

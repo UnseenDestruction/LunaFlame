@@ -1,39 +1,48 @@
 import * as FileSystem from 'expo-file-system';
 import { supabase } from './supabase';
+import { Buffer } from 'buffer';
+
+global.Buffer = global.Buffer || Buffer;
 
 export const uploadImage = async ({ fileUri, fileName }: any) => {
   try {
-    console.log("Reading file from URI:", fileUri);
+    const { data, error: authError } = await supabase.auth.getUser();
+
+    if (authError || !data?.user) {
+      throw new Error('Failed to fetch authenticated user. Please log in.');
+    }
+
+    const userId = data.user.id;
+
+    console.log("File URI:", fileUri);
+    console.log("File Name:", fileName);
+    console.log("User ID:", userId);
 
     const fileContents = await FileSystem.readAsStringAsync(fileUri, {
       encoding: FileSystem.EncodingType.Base64,
     });
 
-    console.log("File read successfully:", fileContents.slice(0, 100)); 
+    const uint8Array = new Uint8Array(Buffer.from(fileContents, 'base64'));
 
-    const uint8Array = new Uint8Array(atob(fileContents).split('').map(char => char.charCodeAt(0)));
-
-    const { data, error } = await supabase.storage
-      .from('palm') 
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from('palm')
       .upload(fileName, uint8Array, {
         contentType: 'image/jpeg',
-        cacheControl: '3600', 
+        cacheControl: '3600',
       });
 
-    if (error) throw error;
+    if (uploadError) throw uploadError;
 
-    const { data: publicUrlData } = supabase.storage
+
+    const { data: publicUrlData, } = supabase.storage
       .from('palm')
       .getPublicUrl(fileName);
+   
 
-    if (!publicUrlData) throw new Error('Failed to retrieve public URL.');
 
-    return publicUrlData.publicUrl; 
-  } catch (err) {
-    console.error('Error uploading image to Supabase:', err);
+    return publicUrlData.publicUrl;
+  } catch (err: any) {
+    console.error('Error uploading image to Supabase:', err.message, err.stack);
     return null;
   }
 };
-
-
-

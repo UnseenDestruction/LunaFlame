@@ -99,7 +99,7 @@ export default function Instruction({ navigation }: any) {
       if (loading) {
         interval = setInterval(() => {
           setProgress((prev) => (prev < 100 ? prev + 10 : 100));
-        }, 500);
+        }, 1200);
       } else if (!loading && interval) {
         clearInterval(interval);
         setProgress(0);
@@ -115,6 +115,7 @@ export default function Instruction({ navigation }: any) {
   
 
     const takePicture = async (): Promise<void> => {
+      setLoading(true)
       if (cameraRef.current) {
         try {
           const picture = await cameraRef.current.takePictureAsync();
@@ -196,7 +197,7 @@ export default function Instruction({ navigation }: any) {
       }
 
 
-      console.log(capturedImage)
+      console.log("here is the captured Image:", capturedImage)
     
     
     return (
@@ -276,11 +277,7 @@ export default function Instruction({ navigation }: any) {
       </View>
     </View>
   ) : (
-    <View>
-      <Text style={{
-        color: '#fff'
-      }}>TEst</Text>
-      </View>
+   null
   )}
 </View>
 
