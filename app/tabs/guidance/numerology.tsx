@@ -12,6 +12,8 @@ export default function Numerology({ navigation }: any) {
   const [analysisResult, setAnalysisResult] = useState<any>(null);
 
 
+
+
   useEffect(() => {
     if (analysisResult) {
       setIsAnalyzed(true);

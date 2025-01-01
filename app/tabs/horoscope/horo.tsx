@@ -99,9 +99,10 @@ export default function Horoscope({ userData,  info,}: any) {
       <View style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
-          alignItems: 'center'
+          alignItems: 'center',
+          padding: 5
       }}>
-      <Text style={{ color: '#B2AFFE', fontSize: 30,  fontFamily: 'Bold',  }}>HOROSCOPE</Text>
+      <Text style={{ color: '#B2AFFE', fontSize: 30,  fontFamily: 'Medium',  }}>HOROSCOPE</Text>
       <TouchableOpacity style={{
           borderWidth: 1,
           borderColor: '#B2AFFE',

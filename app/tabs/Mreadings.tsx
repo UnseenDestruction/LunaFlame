@@ -9,7 +9,6 @@ import Readings from './readings/reading';
 
 export type ReadingsParamList = {
   Readings: undefined;
-  Dream: undefined;
   Palm: undefined
   Birth: undefined
   Tarrot: undefined

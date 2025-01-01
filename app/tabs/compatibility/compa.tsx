@@ -7,7 +7,7 @@ import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient'; 
 import { useEffect } from 'react';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { ReadingsParamList } from '../Mreadings';
+import { CompatibilityParamList } from '../Mcompatibility';
 import Number from '@/assets/images/numerology/number.svg'
 
 import Dream from '../guidance/dream';
@@ -26,7 +26,7 @@ import Cancer from '@/assets/images/zodiac/cancer.png';
 
 
 export default function Compatibility() {
-    const navigation = useNavigation<NavigationProp<ReadingsParamList>>();
+    const navigation = useNavigation<NavigationProp<CompatibilityParamList>>();
 
     const [loaded] = useFonts({
         Light: require('@/assets/fonts/Light.ttf'),
@@ -47,6 +47,8 @@ export default function Compatibility() {
         <SafeAreaProvider style={{ flex: 1, backgroundColor: '#000', padding: 5, gap: 18 }}>
              <Text style={{ color: '#B2AFFE', fontSize: 30,  fontFamily: 'Medium',  }}>COMPATIBILITY</Text>
              <TouchableOpacity
+onPress={() => navigation.navigate('CompBirth')}
+
 style={{ 
   borderRadius: 15,
   overflow: 'hidden', 
@@ -106,6 +108,7 @@ style={{
 </TouchableOpacity>
 
 <TouchableOpacity
+onPress={() => navigation.navigate('CompZodiac')}
 style={{ 
   borderRadius: 15,
   overflow: 'hidden', 

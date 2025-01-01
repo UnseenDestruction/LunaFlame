@@ -11,10 +11,13 @@ import { GuidanceStackParamList } from '@/app/tabs/MainGuidance';
 import Number from '@/assets/images/numerology/number.svg'
 import DreamStars from '@/assets/images/Dream/dreamStars.mp4';
 import CMain from '@/components/Guidance/Crystal/main';
+import { useRoute } from '@react-navigation/native';
 
 
 export default function Guidance() {
     const navigation = useNavigation<NavigationProp<GuidanceStackParamList>>();
+    const route = useRoute();
+    console.log('Current route name:', route.name);
 
     const [loaded] = useFonts({
         Light: require('@/assets/fonts/Light.ttf'),

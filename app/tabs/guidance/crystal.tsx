@@ -5,11 +5,16 @@ import Result from '@/app/tabs/guidance/Dresult';
 import { useState, useEffect } from 'react';
 import React from 'react';
 import CMain from '@/components/Guidance/Crystal/main';
+import { useRoute } from '@react-navigation/native';
 
 export default function Crystal({ navigation }: any) {
   const [loading, setIsLoading] = useState(false);
   const [isAnalyzed, setIsAnalyzed] = useState(false);
   const [analysisResult, setAnalysisResult] = useState<any>(null);
+
+
+  const route = useRoute();
+  console.log('Current route name:', route.name);
 
 
   useEffect(() => {

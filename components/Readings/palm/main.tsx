@@ -90,11 +90,7 @@ export default function MPalm({ navigation,  onShowInstruction  }: any) {
               <View style={{padding: 10, backgroundColor: 'rgba(50, 50, 50, 1)', borderRadius: 999}}>
                 <AntDesign name="left" size={24} color="rgba(255, 255, 255, 0.5)" />
                 </View>
-                <Text style={{
-                  fontFamily: 'Light',
-                }}>
-                  PALM READING
-                </Text>
+              
               </TouchableOpacity>
               <Image 
               source={Elipse}

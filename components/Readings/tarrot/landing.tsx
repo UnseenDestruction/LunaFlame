@@ -91,6 +91,18 @@ export default function Landing({ userData, navigation, info,}: any) {
 
     return (
       <SafeAreaProvider style={{ flex: 1, backgroundColor: '#000', padding: 5, gap: 18 }}>
+     <LinearGradient
+    colors={['#000', 'rgba(30,28,99,255)']} 
+    start={{ x: 0, y: 0}} 
+    end={{ x: 0, y: 1.1 }} 
+    style={{
+      position: 'absolute',
+      width: '150%',
+      height: '150%',
+      borderRadius: 999,
+    }}
+  />
+    
      <View
   style={{
     overflow: 'hidden',
@@ -166,7 +178,9 @@ export default function Landing({ userData, navigation, info,}: any) {
                 alignItems: 'center',
                 gap: 10
             }}>
-            <TouchableOpacity style={{
+            <TouchableOpacity 
+              onPress={() => navigation.navigate('Daily')}
+            style={{
                 flexDirection: 'column',
                 gap: 10,
                 borderColor: '#B2AFFE',
@@ -186,7 +200,11 @@ export default function Landing({ userData, navigation, info,}: any) {
                Daily Tarrot
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Near')}
+            
+            
+            style={{
                 flexDirection: 'column',
                 gap: 4,
                 borderColor: '#B2AFFE',
@@ -215,7 +233,10 @@ export default function Landing({ userData, navigation, info,}: any) {
                 gap: 10
              
             }}>
-            <TouchableOpacity style={{
+            <TouchableOpacity 
+              onPress={() => navigation.navigate('Love')}
+            
+            style={{
                 flexDirection: 'column',
                 gap: 10,
                 borderColor: '#B2AFFE',
@@ -235,7 +256,10 @@ export default function Landing({ userData, navigation, info,}: any) {
                 Love & Relations
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Yes')}
+            
+            style={{
                 flexDirection: 'column',
                 gap: 10,
                 borderColor: '#B2AFFE',
@@ -260,7 +284,10 @@ export default function Landing({ userData, navigation, info,}: any) {
             </TouchableOpacity>
             </View>
           </View>
-          <TouchableOpacity style={{
+          <TouchableOpacity 
+              onPress={() => navigation.navigate('Meanings')}
+          
+          style={{
                 flexDirection: 'row',
                 gap: 10,
                 marginTop: 10,

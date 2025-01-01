@@ -43,7 +43,20 @@ export default function Readings() {
 
 
     return (
+      
         <SafeAreaProvider style={{ flex: 1, backgroundColor: '#000', padding: 5, gap: 18 }}>
+  <LinearGradient
+    colors={['#000', 'rgba(17,17,55,255)']} 
+    start={{ x: 0, y: 1}} 
+    end={{ x: 0, y: 0 }} 
+    style={{
+      position: 'absolute',
+      width: '100%',
+      height: '140%',
+      borderRadius: 10,
+    }}
+  />
+
              <Text style={{ color: '#B2AFFE', fontSize: 30,  fontFamily: 'Medium',  }}>READINGS</Text>
              <TouchableOpacity
   onPress={() => navigation.navigate('Palm')}

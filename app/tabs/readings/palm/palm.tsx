@@ -7,7 +7,7 @@ import Instruction from '@/components/Readings/palm/instruction';
 import Capture from '@/components/Readings/palm/captured';
 import React from 'react';
 
-export default function Palm({ navigation }: any) {
+export default function Test({ navigation }: any) {
     const [showInstruction, setShowInstruction] = useState(false);
   
     return (

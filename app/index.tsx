@@ -20,7 +20,13 @@ import SignIn from './auth/sigIn';
 import SignUp from './auth/signUp';
 import Tarrot from './tabs/readings/tarrot/tarrot';
 import Birth from './tabs/readings/birth/birth';
-
+import CompBirth from './tabs/compatibility/birth/birth';
+import CompZodiac from './tabs/compatibility/zodiac/zodiac';
+import Daily from './tabs/readings/tarrot/daily/daily';
+import Meanings from './tabs/readings/tarrot/meaning/meanings';
+import Yes from './tabs/readings/tarrot/yes/yes';
+import Near from './tabs/readings/tarrot/near/near';
+import Love from './tabs/readings/tarrot/love/love';
 
 export default function Index() {
     const Stack = createStackNavigator();
@@ -40,6 +46,13 @@ export default function Index() {
                          <Stack.Screen name="Auth" component={Auth} />
                         <Stack.Screen name={'Nav'} component={Nav} />
                         <Stack.Screen name={'Dream'} component={Dream} />
+                        <Stack.Screen name={'Daily'} component={Daily} />
+                        <Stack.Screen name={'Love'} component={Love} />
+                        <Stack.Screen name={'Meanings'} component={Meanings} />
+                        <Stack.Screen name={'Near'} component={Near} />
+                        <Stack.Screen name={'Yes'} component={Yes} />
+                        <Stack.Screen name={'CompBirth'} component={CompBirth} />
+                        <Stack.Screen name={'CompZodiac'} component={CompZodiac} />
                         <Stack.Screen name={'Palm'} component={Palm} />
                         <Stack.Screen name={'Birth'} component={Birth} />
                         <Stack.Screen name={'Crystal'} component={Crystal} />
