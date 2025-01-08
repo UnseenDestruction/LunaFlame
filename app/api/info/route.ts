@@ -1,6 +1,7 @@
 import OpenAI from "openai";
 import { DateTime } from "luxon";
 import { NextResponse } from "next/server";
+import { supabase } from "@/app/lib/storage";
 
 const GPT = process.env.GPT;
 const ACCESS_CODE = process.env.ACCESS_CODE;
@@ -13,6 +14,8 @@ type SignUpRequest = {
   location: string;
   email: string;
   password: string;
+  userId:  string;
+  gender: string
 };
 
 export async function POST(request: any) {
@@ -24,7 +27,7 @@ export async function POST(request: any) {
 
     const body: SignUpRequest = await request.json();
 
-    console.log(body);
+    console.log("here is the data from client:", body);
 
     if (!body.name || !body.dob) {
       return NextResponse.json({
@@ -62,13 +65,13 @@ export async function POST(request: any) {
         {
           role: "user",
           content: `Based on the following data, generate a detailed astrological analysis including:
-            - Horoscope
-            - Affirmation
-            - Today's Date
-            - Today's Tips
-            - Today's Matches
-            - Lunar Calendar
-            - Today's Features
+            Today's Horoscope: Today's Horoscope
+            Affirmation: Affirmation
+            Daily Tips for ${sunSign}: Daily Tips for ${sunSign}  
+            Today's Matches: Today's Matches
+            Lunar Calendar:  Lunar Calendar
+            Today's Features: Today's Features
+
             
             Name: ${body.name}
             Sun Sign: ${sunSign}
@@ -91,17 +94,51 @@ export async function POST(request: any) {
       });
     }
 
+    
+    
+
     const extractedData = parseAssistantResponse(assistantResponse);
+
+    console.log("here is the:", extractedData.affirmation)
+    
+
+    const { data, error } = await supabase.from("horoscopes").insert([
+      {
+        userId: body.userId,
+        name: body.name,
+        sun_sign: sunSign,
+        moon_sign: moonSign,
+        ascendant: ascendant,
+        element: element,
+        todayHoroscope: extractedData.horoscope,
+        affirmation: extractedData.affirmation,
+        dailyTips: extractedData.tips,
+        matches: extractedData.matches,
+        lunar_calendar: extractedData.lunarCalendar,
+        features: extractedData.features,
+        gender: body.gender,
+        birth: body.dob
+      },
+    ]);
+
+    if (error) {
+      console.error("Supabase Insert Error:", error);
+      return NextResponse.json({
+        status: "error",
+        message: `Failed to save data to the database. ${error}`,
+      });
+    }
 
     return NextResponse.json({
       status: "success",
       message: "Info Analysis Complete",
       content: assistantResponse,
-      Name: extractedData.name || body.name,
+      Name: body.name,
       Moon: extractedData.moonSign || moonSign,
       Ascendant: extractedData.ascendant || ascendant,
       Element: extractedData.element || element,
       SunSign: extractedData.sunSign || sunSign,
+      
     });
   } catch (error) {
     console.error("Error:", error);
@@ -165,18 +202,36 @@ function getElement(sunSign: string) {
   return elements[sunSign] || "Unknown";
 }
 
-function parseAssistantResponse(response: string) {
+function parseAssistantResponse(response: any) {
   const nameMatch = response.match(/Name: ([\w\s]+)/);
   const sunSignMatch = response.match(/Sun Sign: (\w+)/);
   const moonSignMatch = response.match(/Moon Sign: (\w+)/);
   const ascendantMatch = response.match(/Ascendant: (\w+)/);
   const elementMatch = response.match(/Element: (\w+)/);
+  const horoscopeMatch = response.match(/Horoscope:([\s\S]+?)(?=Affirmation|$)/);
+  const affirmationMatch = response.match(/Affirmation:\s*\*\*([\s\S]*?)\*\*/);
+  const dateMatch = response.match(/Date: ([\w\s]+)/);
+  const tipsMatch = response.match(/Tips:([\s\S]+?)(?=Matches|$)/);
+  const matchesMatch = response.match(/Matches:([\s\S]+?)(?=Lunar Calendar|$)/);
+  const lunarCalendarMatch = response.match(/Lunar Calendar:([\s\S]+?)(?=Features|$)/);
+  const featuresMatch = response.match(/Features:([\s\S]+?)(?=$)/);
 
-  return {
-    name: nameMatch ? nameMatch[1].trim() : undefined,
+  const parsedData = {
     sunSign: sunSignMatch ? sunSignMatch[1].trim() : undefined,
     moonSign: moonSignMatch ? moonSignMatch[1].trim() : undefined,
     ascendant: ascendantMatch ? ascendantMatch[1].trim() : undefined,
     element: elementMatch ? elementMatch[1].trim() : undefined,
+    horoscope: horoscopeMatch ? horoscopeMatch[1].trim() : undefined,
+    affirmation: affirmationMatch ? affirmationMatch[1].trim() : undefined,
+    date: dateMatch ? dateMatch[1].trim() : undefined,
+    tips: tipsMatch ? tipsMatch[1].trim() : undefined,
+    matches: matchesMatch ? matchesMatch[1].trim() : undefined,
+    lunarCalendar: lunarCalendarMatch ? lunarCalendarMatch[1].trim() : undefined,
+    features: featuresMatch ? featuresMatch[1].trim() : undefined,
   };
+
+  console.log("Parsed Data:", parsedData);
+
+  return parsedData;
 }
+
