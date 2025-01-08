@@ -3,7 +3,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { createStackNavigator } from '@react-navigation/stack';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useNavigation, useNavigationState } from '@react-navigation/native';
-import Horoscope from './horoscope/horo';
+import Horoscope from '@/components/horoscope/main';
 
 
 

@@ -1,6 +1,5 @@
 import { supabase } from './supabase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { addHoroscopeData } from './info';
 
 
 export async function signInWithEmail(

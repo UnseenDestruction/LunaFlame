@@ -202,6 +202,17 @@ export default function Instruction({ navigation }: any) {
     
     return (
         <SafeAreaView  style={{ backgroundColor: '#000', flex: 1 }}>
+          <LinearGradient
+    colors={['#000', '#464462']} 
+    start={{ x: 0, y: 0}} 
+    end={{ x: 0, y: 1.2 }} 
+    style={{
+      position: 'absolute',
+      width: '120%',
+      height: '140%',
+      borderRadius: 15,
+    }}
+  />
 {capturedImage ? (
   <View style={{ flex: 1 }}>
   {loading ? (

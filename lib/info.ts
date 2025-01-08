@@ -2,19 +2,22 @@ import axios from "axios";
 import { supabase } from './supabase';
 
 
-export async function fetchInfo(data: any) {
+export async function fetchInfo(datas: any) {
 
+      const { data, error: sessionError } = await supabase.auth.getSession();
+      const userId = data?.session?.user?.id || "";
 
     try {
       const flatData = {
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        dob: data.dob,
-        time: data.tob,
-        location: data.lob,
-        gender: data.gender,
-        relation: data.relation,
+        name: datas.name,
+        email: datas.email,
+        password: datas.password,
+        dob: datas.dob,
+        time: datas.tob,
+        location: datas.lob,
+        gender: datas.gender,
+        relation: datas.relation,
+        userId: userId
       };
   
       const response = await axios.post(
@@ -42,37 +45,3 @@ export async function fetchInfo(data: any) {
 
   
 
-
-  export async function addHoroscopeData(
-    userId: string,
-    horoscopeData: {
-        ascendant: string;
-        element: string;
-        moon: string;
-        name: string;
-        sunSign: string;
-        content: string;
-        message: string;
-        status: string;
-    }
-) {
-    const { error } = await supabase
-        .from('horoscope')
-        .insert([{
-            userId: userId,
-            ascendant: horoscopeData.ascendant,
-            element: horoscopeData.element,
-            moon: horoscopeData.moon,
-            name: horoscopeData.name,
-            sunSign: horoscopeData.sunSign,
-            content: horoscopeData.content,
-            message: horoscopeData.message,
-            status: horoscopeData.status,
-        }]);
-
-    if (error) {
-        return { success: false, message: error?.message || 'Write to DB failed.' };
-    }
-
-    return { success: true };
-}

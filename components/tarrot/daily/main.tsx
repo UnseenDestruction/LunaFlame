@@ -13,6 +13,8 @@ import TDResult from './result';
 
 import Card from '@/assets/images/tarrot/TarotCards/card.svg';
 
+// 1: { image: require('@/assets/images/tarrot/TarotCards/1.gif'), description: 'Three of Wands' },
+
 const cardImages: Record<string, any> = {
   1: require('@/assets/images/tarrot/TarotCards/1.gif'),
   2: require('@/assets/images/tarrot/TarotCards/2.gif'),
@@ -364,7 +366,6 @@ null
                    }}
                  >
                      <View
-                 //  onPress={onShowInstruction}
            style={{
              borderRadius: 999,
              borderColor: '#B2AFFE',
