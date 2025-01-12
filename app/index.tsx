@@ -27,6 +27,8 @@ import Meanings from './tabs/readings/tarrot/meaning/meanings';
 import Yes from './tabs/readings/tarrot/yes/yes';
 import Near from './tabs/readings/tarrot/near/near';
 import Love from './tabs/readings/tarrot/love/love';
+import Chat from '@/components/Guidance/Crystal/chat';
+import Speak from '@/components/Guidance/Crystal/speak';
 
 export default function Index() {
     const Stack = createStackNavigator();
@@ -57,6 +59,8 @@ export default function Index() {
                         <Stack.Screen name={'Birth'} component={Birth} />
                         <Stack.Screen name={'Crystal'} component={Crystal} />
                         <Stack.Screen name={'Tarrot'} component={Tarrot} />
+                        <Stack.Screen name={'Chat'} component={Chat} />
+                        <Stack.Screen name={'Speak'} component={Speak} />
                         <Stack.Screen name={'Numerology'} component={Numerology} />
                         <Stack.Screen name={'SignIn'} component={SignIn} />
                         <Stack.Screen name={'SignUp'} component={SignUp} />

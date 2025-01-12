@@ -10,36 +10,36 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { ResizeMode } from 'expo-av';
 import _ from 'lodash'
 import TDResult from './result';
+import { TarrotRes } from '@/lib/readings';
 
 import Card from '@/assets/images/tarrot/TarotCards/card.svg';
 
-// 1: { image: require('@/assets/images/tarrot/TarotCards/1.gif'), description: 'Three of Wands' },
 
 const cardImages: Record<string, any> = {
-  1: require('@/assets/images/tarrot/TarotCards/1.gif'),
-  2: require('@/assets/images/tarrot/TarotCards/2.gif'),
-  3: require('@/assets/images/tarrot/TarotCards/3.gif'),
-  4: require('@/assets/images/tarrot/TarotCards/4.gif'),
-  5: require('@/assets/images/tarrot/TarotCards/5.gif'),
-  6: require('@/assets/images/tarrot/TarotCards/6.gif'),
-  7: require('@/assets/images/tarrot/TarotCards/7.gif'),
-  8: require('@/assets/images/tarrot/TarotCards/8.gif'),
-  9: require('@/assets/images/tarrot/TarotCards/9.gif'),
-  10: require('@/assets/images/tarrot/TarotCards/10.gif'),
-  11: require('@/assets/images/tarrot/TarotCards/11.gif'),
-  12: require('@/assets/images/tarrot/TarotCards/12.gif'),
-  13: require('@/assets/images/tarrot/TarotCards/13.gif'),
-  14: require('@/assets/images/tarrot/TarotCards/14.gif'),
-  15: require('@/assets/images/tarrot/TarotCards/15.gif'),
-  16: require('@/assets/images/tarrot/TarotCards/16.gif'),
-  17: require('@/assets/images/tarrot/TarotCards/17.gif'),
-  18: require('@/assets/images/tarrot/TarotCards/18.gif'),
-  19: require('@/assets/images/tarrot/TarotCards/19.gif'),
-  20: require('@/assets/images/tarrot/TarotCards/20.gif'),
-  21: require('@/assets/images/tarrot/TarotCards/21.gif'),
-  22: require('@/assets/images/tarrot/TarotCards/22.gif'),
-  23: require('@/assets/images/tarrot/TarotCards/23.gif'),
-  24: require('@/assets/images/tarrot/TarotCards/24.gif'),
+  1: { image: require('@/assets/images/tarrot/TarotCards/1.gif'), description: 'Three of Wands' },
+  2: { image: require('@/assets/images/tarrot/TarotCards/2.gif'), description: 'The Lovers' },
+  3: { image: require('@/assets/images/tarrot/TarotCards/3.gif'), description: 'The World' },
+  4: { image: require('@/assets/images/tarrot/TarotCards/4.gif'), description: 'Four of Coins' },
+  5: { image: require('@/assets/images/tarrot/TarotCards/5.gif'), description: 'Page of Chalices' },
+  6: { image: require('@/assets/images/tarrot/TarotCards/6.gif'), description: 'Eight of Chalices' },
+  7: { image: require('@/assets/images/tarrot/TarotCards/7.gif'), description: 'The Fool' },
+  8: { image: require('@/assets/images/tarrot/TarotCards/8.gif'), description: 'Eight of Coins' },
+  9: { image: require('@/assets/images/tarrot/TarotCards/9.gif'), description: 'The Herophant' },
+  10: { image: require('@/assets/images/tarrot/TarotCards/10.gif'), description: 'The Chariot' },
+  11: { image: require('@/assets/images/tarrot/TarotCards/11.gif'), description: 'Knight of Swords' },
+  12: { image: require('@/assets/images/tarrot/TarotCards/12.gif'), description: 'Four of Chalices' },
+  13: { image: require('@/assets/images/tarrot/TarotCards/13.gif'), description: 'Three of Coins' },
+  14: { image: require('@/assets/images/tarrot/TarotCards/14.gif'), description: 'Five of Coins' },
+  15: { image: require('@/assets/images/tarrot/TarotCards/15.gif'), description: 'Knight of Wands' },
+  16: { image: require('@/assets/images/tarrot/TarotCards/16.gif'), description: 'Justice' },
+  17: { image: require('@/assets/images/tarrot/TarotCards/17.gif'), description: 'Two Chalices' },
+  18: { image: require('@/assets/images/tarrot/TarotCards/18.gif'), description: 'Age of Coins' },
+  19: { image: require('@/assets/images/tarrot/TarotCards/19.gif'), description: 'Three of Chalices' },
+  20: { image: require('@/assets/images/tarrot/TarotCards/20.gif'), description: 'Knight of Coins' },
+  21: { image: require('@/assets/images/tarrot/TarotCards/21.gif'), description: 'Death' },
+  22: { image: require('@/assets/images/tarrot/TarotCards/22.gif'), description: 'Queen of Swords' },
+  23: { image: require('@/assets/images/tarrot/TarotCards/23.gif'), description: 'The Hanged Man' },
+  24: { image: require('@/assets/images/tarrot/TarotCards/24.gif'), description: 'Ace of Chalices' },
 };
 
 
@@ -48,32 +48,39 @@ export default function TDMain({ navigation }: any) {
     const { colorScheme } = useColorScheme();
     const [flippedCards, setFlippedCards] = useState<boolean[]>([false, false, false]);
     const [selectedCard, setSelectedCard] = useState<any | null>([]);
+    const [response, setResponse] = useState()
     const [flip, setIsFlip] = useState(false)
     const [result, setResult] = useState(false)
     const [isClicked, setIsClicked] = useState(false)
     const [count, setCount] = useState(3)
-    const [loading, setLoading] = useState(false)
-     const [assistantResponse, setAssistantResponse] = useState<{
-      status?: string;
-      message?: string;
-      analysis?: {
-        overview?: {
-          percentages?: Record<string, number>;
-          summary?: string;
-        };
-        visionAnalysis?: Record<string, any>;
-        detailedInsights?: string;
-        career?: {
-          description?: string;
-        };
-        characteristics?: {
-          strengths?: string[];
-          weaknesses?: string[];
-          personality?: string;
-        };
-      };
-    }>({});
-    console.log("here is the card:", selectedCard[0])
+    const [loading, setIsLoading] = useState(false)
+
+
+    const handleSend = async (selected: any[]) => {
+      setIsLoading(true);
+  
+      try {
+        const response = await TarrotRes(selected);
+
+        console.log(response)
+  
+        if (response?.content) {
+          const { content } = response;
+          setIsLoading(true);
+  
+          console.log(content)
+          setResponse(content);
+        } else {
+          console.error("Invalid response format");
+        }
+      } catch (error) {
+        console.error("Error fetching the dream response:", error);
+      } finally {
+        setIsLoading(false)
+      }
+    };
+
+
     const [loaded] = useFonts({
         Light: require("@/assets/fonts/Light.ttf"),
         Medium: require("@/assets/fonts/Medium.ttf"),
@@ -82,6 +89,8 @@ export default function TDMain({ navigation }: any) {
       });
     
     const scale = useRef(new Animated.Value(1)).current;
+
+    console.log('here is the count:', count)
     
    
 
@@ -130,16 +139,10 @@ export default function TDMain({ navigation }: any) {
 
       const Result = () => {
         setResult(true)
+          handleSend(selectedCard);
       }
 
-      const fisherYatesShuffle = (array: any[]) => {
-        const shuffled = [...array];
-        for (let i = shuffled.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1)); 
-          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; 
-        }
-        return shuffled;
-      };
+    
 
       const handleFlipCard = (index: number) => {
         if (selectedCard.length === 0) {
@@ -147,16 +150,18 @@ export default function TDMain({ navigation }: any) {
           const selected = shuffledKeys.slice(0, 3).map((key) => cardImages[key]);
           setSelectedCard(selected);
         }
+
+      
     
         setFlippedCards((prev) =>
           prev.map((isFlipped, i) => (i === index ? true : isFlipped))
         );
-      };
-      console.log(isClicked)
-      console.log(count)
-      console.log("here are the cards:", selectedCard)
 
+      
+      };
     
+
+
     return (
         <SafeAreaView  style={{ backgroundColor: '#000', flex: 1 }}>
   <LinearGradient
@@ -215,7 +220,7 @@ null
   )}
          
             {result ? (
-           <TDResult cards={selectedCard} navigation={navigation} />
+           <TDResult cards={selectedCard} navigation={navigation} response={response}  />
             ): (
               count > 0 ? (
                 <View style={{
@@ -585,7 +590,7 @@ null
                />
                {isFlipped && selectedCard[index] ? (
                  <Image
-                   source={selectedCard[index]}
+                   source={selectedCard[index]?.image}
                    style={{ width: 120, height: 240, borderRadius: 10 }}
                    resizeMode="cover"
                  />

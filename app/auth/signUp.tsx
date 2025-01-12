@@ -200,7 +200,11 @@ const handleSignUp = async () => {
   }}
 >
 {!signupComplete && (
-  <TouchableOpacity onPress={goBack} disabled={currentStep === 1}>
+  <TouchableOpacity onPress={goBack} 
+  style={{
+    display: currentStep === 1 ? 'none' : 'flex',
+  }}
+  >
     <View
       style={{
         padding: 10,

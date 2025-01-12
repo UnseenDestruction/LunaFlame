@@ -1,21 +1,46 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { SafeAreaView, Text, View, TouchableOpacity, ActivityIndicator, Animated, TextInput } from 'react-native';
+import { SafeAreaView, Image, Text, View, TextInput, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback, Animated } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Video } from 'expo-av';
 import { BlurView } from 'expo-blur';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useFonts } from 'expo-font';
-import { fetchDreamResponse } from '@/lib/guidance';
+import { LinearGradient } from 'expo-linear-gradient'; 
+import { fetchNumerologyResponse } from '@/lib/guidance';
+import { supabase } from '@/lib/supabase';
+
 
 import Name from '@/components/Auth/Name';
 import DOB from '@/components/Auth/dob';
 
 
-import Lines from '@/assets/images/numerology/lines.svg';
+import Wheel from '@/assets/images/guidance/numerology/wheel.png';
+import Calendar from '@/assets/images/guidance/numerology/calendar.svg';
 
-export default function NMain({ navigation, setIsLoading, setAnalysisResult }: any) {
+
+
+interface UserInfo {
+  id: number;
+  name: string;
+  birth: string;
+  sun_sign: string;
+  moon_sign: string;
+  ascendant: string;
+  element: string;
+  gender: string;
+  userId: string;
+  affirmation?: string;
+  features?: string;
+  lunar_calendar?: string;
+  matches?: string;
+  todayHoroscope?: string | null;
+}
+
+export default function NMain({  userData, navigation, setIsLoading, setAnalysisResult }: any) {
   const [inputText, setInputText] = useState("");
-  const [isLoading, setMainLoading] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  
 
   const [loaded] = useFonts({
     Light: require('@/assets/fonts/Light.ttf'),
@@ -74,16 +99,45 @@ export default function NMain({ navigation, setIsLoading, setAnalysisResult }: a
     pulse();
   }, [scale]);
 
+
+  useEffect(() => {
+    const fetchData = async () => {
+        const { data, error: sessionError } = await supabase.auth.getSession();
+        const userId = data?.session?.user?.id || "";
+
+      try {
+        const { data, error } = await supabase
+          .from('horoscopes') 
+          .select('*')
+          .eq('userId', userId)
+          .single()
+          
+        setUserInfo(data)
+        if (error) throw error;
+      } catch (error: any) {
+        console.error('Error fetching data from Supabase:', error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [userData]);
+
+
+  const userName = userInfo?.name;
+  const dob = userInfo?.birth;
+
+
   const handleSend = async () => {
-    if (inputText.length < 20) return;
 
     setIsLoading(true);
     try {
-      const response = await fetchDreamResponse(inputText);
+      const response = await fetchNumerologyResponse(userName, dob);
       if (response?.content) {
-        const { content, image, userMessage } = response;
+        const { content} = response;
         setInputText("");
-        setAnalysisResult({ content, image, userMessage });
+        setAnalysisResult({ content });
       } else {
         console.error("Invalid response format");
       }
@@ -103,65 +157,128 @@ export default function NMain({ navigation, setIsLoading, setAnalysisResult }: a
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
-      <View
-        style={{
-          justifyContent: 'flex-start',
-          alignItems: 'center',
-          flexDirection: 'row',
-          gap: 10,
-        }}
-      >
-        <TouchableOpacity onPress={() => navigation.navigate('Nav')}>
-          <View style={{ padding: 10, backgroundColor: 'rgba(50, 50, 50, 1)', borderRadius: 999 }}>
-            <AntDesign name="left" size={24} color="rgba(255, 255, 255, 0.5)" />
-          </View>
-        </TouchableOpacity>
-        <Text style={{ color: '#FC0160', fontSize: 30, fontFamily: 'Light',  }}>NUMEROLOGY</Text>
-      </View>
-        <Lines width={450} height={450}
-        style={{
-            position: 'relative',
-            top: -300,
-            right: 15,
-            opacity: 0.7
-        }}
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#010001' }}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+       <KeyboardAvoidingView
+          style={{  }}
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        >
+        <View
+            
+    
+              style={{
+                overflow: 'hidden',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+                flexDirection: 'row',
+                zIndex: 1,
+                gap: 10,
+                borderRadius: 10,
+                padding: 10,
+                paddingVertical: 10,
+                backgroundColor: '#22000c'
+              }}
+            >
+              <TouchableOpacity onPress={() => navigation.navigate('Nav')}>
+              <View style={{padding: 10, backgroundColor: 'rgba(50, 50, 50, 1)', borderRadius: 999}}>
+                <AntDesign name="left" size={24} color="rgba(255, 255, 255, 0.5)" />
+                </View>
+              </TouchableOpacity>
+            
+                    <Text style={{ color: '#FC0160', fontSize: 30,  fontFamily: 'Light',  }}>NUMEROLOGY</Text>
+            </View>
 
-        />
+            <Image 
+    source={Wheel} 
+    style={{ 
+      width: 500, 
+      height: 500, 
+      borderRadius: 999, 
+      borderWidth: 3,
+      borderColor: 'rgba(107, 77, 150, 0.32)',
+      opacity: 0.8,
+      position: 'absolute', 
+      top: -300,
+      left: -40,
+      zIndex: 0
+    }} 
+    resizeMode="cover" 
+  />
 
 <View style={{
     gap: 10,
-    position: 'relative',
-    top: -200,
-    marginBottom: 120
+    marginTop: 200,
+    marginBottom: 350
 }}>
+  <View>
+  <LinearGradient
+    colors={['#000', '#FC0160']} 
+    start={{ x: 0, y: 0 }} 
+    end={{ x: 4, y: 0 }} 
+    style={{
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+      borderRadius: 15,
+    }}
+  />
            
             <TextInput
                 placeholder={'Enter your full name'}
+                value={userInfo?.name}
                 placeholderTextColor={'#FC0160'}
                 style={{
                     fontFamily: 'Light',
                     borderWidth: 0.5,
                     borderColor: '#FC0160',
-                    borderRadius: 10,
+                    borderRadius: 20,
                     padding: 20,
-                    opacity: 0.7
+                       color: '#fff'
                 }}
             />
-             <TextInput
+      </View>
+      <View style={{
+     
+    
+     
+      }}>
+      <LinearGradient
+    colors={['#000', '#FC0160']} 
+    start={{ x: 0, y: 0 }} 
+    end={{ x: 4, y: 0 }} 
+    style={{
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+      borderRadius: 15,
+    }}
+  />
+  <View style={{
+       flexDirection: 'row',
+       borderWidth: 0.5,
+       borderColor: '#FC0160',
+       borderRadius: 20,
+       padding: 20,
+       justifyContent: 'space-between'
+  }}>
+   <TextInput
                 placeholder={'Select your date of birth'}
                 placeholderTextColor={'#FC0160'}
+                value={userInfo?.birth}
                 style={{
-                    fontFamily: 'Light',
-                    borderWidth: 0.5,
-                    borderColor: '#FC0160',
-                    borderRadius: 10,
-                    padding: 20,
-                    opacity: 0.7
-                    
+                  fontFamily: 'Light',
+                      color: '#fff'
                 }}
-                
+             
             />
+            <TouchableOpacity>
+            <Calendar width={30} height={30} />
+            </TouchableOpacity>
+
+            </View>
+      </View>
+
+            
         </View>
 
       <View style={{
@@ -195,9 +312,9 @@ export default function NMain({ navigation, setIsLoading, setAnalysisResult }: a
                   }}
                 >
                     <TouchableOpacity
-                    onPress={() => navigation.navigate('Nav')}
+                    onPress={handleSend}
           style={{
-            backgroundColor: "#FC0160",
+            backgroundColor: "#fd0060",
             borderRadius: 999,
             paddingVertical: 12,
             paddingHorizontal: 50,
@@ -233,6 +350,8 @@ export default function NMain({ navigation, setIsLoading, setAnalysisResult }: a
                       borderRadius: 9999
                     }}/>
                 </View>
+                </KeyboardAvoidingView>
+                </TouchableWithoutFeedback>
     </SafeAreaView>
   );
 }

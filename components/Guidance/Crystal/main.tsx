@@ -125,32 +125,37 @@ export default function CMain({ navigation, setIsLoading, setAnalysisResult }: a
           <View style={{
             gap: 10
           }}>
-          <Animated.View
-         style={{
-          flexDirection: 'row',
-          transform: [{ translateX }],
-          justifyContent: 'center',
-        }}
+       <Animated.View
+  style={{
+    flexDirection: 'row',
+    transform: [{ translateX }],
+    justifyContent: 'center',
+    gap: 10,
+  }}
+>
+  {[...Array(3)].map((_, colIndex) => {
+    const buttonTexts = ["Reveal My Destiny", "Reveal My Future", "Illuminate My Path"];
+    return (
+      <TouchableOpacity key={colIndex}>
+        <Text
+          style={{
+            fontFamily: 'Light',
+            color: '#FFD854',
+            borderColor: '#FFD854B2',
+            borderRadius: 999,
+            borderWidth: 0.4,
+            padding: 5,
+            width: 150,
+            textAlign: 'center',
+          }}
         >
-          {[...Array(3)].map((_, colIndex) => (
-            <TouchableOpacity key={colIndex}>
-              <Text
-                style={{
-                  fontFamily: 'Light',
-                  color: '#FFD854',
-                  borderColor: '#fff',
-                  borderRadius: 999,
-                  borderWidth: 0.4,
-                  padding: 5,
-                  width: 150,
-                  opacity: 0.5,
-                }}
-              >
-                Illuminate My Path
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </Animated.View>
+          {buttonTexts[colIndex]}
+        </Text>
+      </TouchableOpacity>
+    );
+  })}
+</Animated.View>
+
 
             
         <Animated.View
@@ -158,26 +163,31 @@ export default function CMain({ navigation, setIsLoading, setAnalysisResult }: a
           flexDirection: 'row',
           transform: [{ translateX }],
           justifyContent: 'center',
+          gap: 10
         }}
         >
-          {[...Array(3)].map((_, colIndex) => (
-            <TouchableOpacity key={colIndex}>
-              <Text
-                style={{
-                  fontFamily: 'Light',
-                  color: '#FFD854',
-                  borderColor: '#fff',
-                  borderRadius: 999,
-                  borderWidth: 0.4,
-                  padding: 5,
-                  width: 150,
-                  opacity: 0.5,
-                }}
-              >
-                Illuminate My Path
-              </Text>
-            </TouchableOpacity>
-          ))}
+          
+          {[...Array(3)].map((_, colIndex) => {
+    const buttonTexts = ["Illuminate My Path", "Summon My Future", "Call Upon The Stars "];
+    return (
+      <TouchableOpacity key={colIndex}>
+        <Text
+          style={{
+            fontFamily: 'Light',
+            color: '#FFD854',
+            borderColor: '#FFD854B2',
+            borderRadius: 999,
+            borderWidth: 0.4,
+            padding: 5,
+            width: 150,
+            textAlign: 'center',
+          }}
+        >
+          {buttonTexts[colIndex]}
+        </Text>
+      </TouchableOpacity>
+    );
+  })}
         </Animated.View>
         
         <Animated.View
@@ -185,26 +195,30 @@ export default function CMain({ navigation, setIsLoading, setAnalysisResult }: a
           flexDirection: 'row',
           transform: [{ translateX }],
           justifyContent: 'center',
+          gap: 10
         }}
         >
-          {[...Array(3)].map((_, colIndex) => (
-            <TouchableOpacity key={colIndex}>
-              <Text
-                style={{
-                  fontFamily: 'Light',
-                  color: '#FFD854',
-                  borderColor: '#fff',
-                  borderRadius: 999,
-                  borderWidth: 0.4,
-                  padding: 5,
-                  width: 150,
-                  opacity: 0.5,
-                }}
-              >
-                Illuminate My Path
-              </Text>
-            </TouchableOpacity>
-          ))}
+             {[...Array(3)].map((_, colIndex) => {
+    const buttonTexts = ["Illuminate My Path", "Summon The Stars", "Reveal My Future"];
+    return (
+      <TouchableOpacity key={colIndex}>
+        <Text
+          style={{
+            fontFamily: 'Light',
+            color: '#FFD854',
+            borderColor: '#FFD854B2',
+            borderRadius: 999,
+            borderWidth: 0.4,
+            padding: 5,
+            width: 150,
+            textAlign: 'center',
+          }}
+        >
+          {buttonTexts[colIndex]}
+        </Text>
+      </TouchableOpacity>
+    );
+  })}
         </Animated.View>
         </View>
       <View>
@@ -222,7 +236,7 @@ export default function CMain({ navigation, setIsLoading, setAnalysisResult }: a
             justifyContent: 'center',
             alignItems: 'center',
             textAlign: 'center',
-            fontSize: 20,
+            fontSize: 30,
             position: 'relative',
             top: -20,
           }}
@@ -232,10 +246,10 @@ export default function CMain({ navigation, setIsLoading, setAnalysisResult }: a
         <Text
           style={{
             color: '#FFF',
-            opacity: 0.5,
+            opacity: 0.8,
             fontFamily: 'Light',
             textAlign: 'center',
-            fontSize: 12,
+            fontSize: 18,
             position: 'relative',
             top: -20,
           }}
@@ -263,6 +277,7 @@ export default function CMain({ navigation, setIsLoading, setAnalysisResult }: a
           }}
         >
           <TouchableOpacity
+           onPress={() => navigation.navigate('Chat')}
             style={{
               backgroundColor: 'rgba(255, 216, 84, 0.5)',
               borderRadius: 999,
@@ -296,7 +311,7 @@ export default function CMain({ navigation, setIsLoading, setAnalysisResult }: a
           }}
         >
           <TouchableOpacity
-            onPress={() => navigation.navigate('Nav')}
+            onPress={() => navigation.navigate('Speak')}
             style={{
               backgroundColor: 'rgba(255, 216, 84, 0.5)',
               width: 180,
@@ -324,3 +339,9 @@ export default function CMain({ navigation, setIsLoading, setAnalysisResult }: a
     </SafeAreaView>
   );
 }
+
+
+
+
+
+

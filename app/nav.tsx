@@ -21,6 +21,7 @@ import Horoscope from '@/assets/images/nav/moon.svg';
 import Readings from '@/assets/images/nav/live.svg';
 import Profile from '@/assets/images/nav/profile.svg';
 import Guidance1 from '@/assets/images/nav/guidance.svg';
+import Compass from '@/assets/images/guidance/compass.svg';
 import Compatibility from '@/assets/images/nav/yinyang.svg';
 import CHoroscope from '@/assets/images/nav/clicked/Moon.svg';
 import CReadings from '@/assets/images/nav/clicked/live.svg';
@@ -113,7 +114,7 @@ export default function Nav({route}: any) {
     tabBarLabel: 'Guidance',
     tabBarIcon: ({ focused }: any) =>
       focused ? (
-        <CGuidance width={25} height={25} />
+        <Compass width={25} height={25} />
       ) : (
         <Guidance1 width={25} height={25} />
       ),

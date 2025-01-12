@@ -13,7 +13,6 @@ import {
 import { useFonts } from "expo-font";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { ResizeMode } from "expo-av";
-import { ZodiacRes } from "@/lib/compa";
 
 const { width } = Dimensions.get("window");
 
@@ -35,8 +34,7 @@ const zodiacData = [
   { name: "Pisces", date: "19 Feb - 20 Mar", image: require("@/assets/images/zodiac/Pisces0.png") },
 ];
 
-export default function MZodiac({ navigation,  setAnalysisResult }: any) {
-    const [isLoading, setIsLoading] = useState(false)
+export default function ZodiacResult({ navigation }: any) {
   const [loaded] = useFonts({
     Light: require("@/assets/fonts/Light.ttf"),
     Medium: require("@/assets/fonts/Medium.ttf"),
@@ -44,32 +42,9 @@ export default function MZodiac({ navigation,  setAnalysisResult }: any) {
     Bold: require("@/assets/fonts/QuicksandSemiBold.ttf"),
   });
 
-  const [selectedSigns, setSelectedSigns] = useState<(typeof zodiacData)[0][]>([]); 
+  const [selectedSigns, setSelectedSigns] = useState<(typeof zodiacData)[0][]>([]); // Array to store selected signs
   const scale = useRef(new Animated.Value(1)).current;
   const scrollX = useRef(new Animated.Value(0)).current;
-
-
-  const one = selectedSigns[1]?.name || "";
-  const two = 'cancer'
-
-  const handleSend = async () => {
-
-    setIsLoading(true);
-    try {
-      const response = await ZodiacRes(one, two);
-      if (response?.content) {
-        const { content} = response;
-        setAnalysisResult({ content });
-      } else {
-        console.error("Invalid response format");
-      }
-    } catch (error) {
-      console.error("Error fetching the dream response:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
 
   useEffect(() => {
     Animated.loop(
@@ -328,7 +303,7 @@ export default function MZodiac({ navigation,  setAnalysisResult }: any) {
                   }}
                 >
                     <TouchableOpacity
-                    onPress={handleSend}
+                    // onPress={handleSend}
           style={{
             backgroundColor: "#B2AFFE",
             borderRadius: 999,

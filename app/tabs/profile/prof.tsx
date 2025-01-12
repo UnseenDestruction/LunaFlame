@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { TouchableOpacity, Text, View, Image, ActivityIndicator, Animated, Modal  } from 'react-native';
 import { Video, ResizeMode } from 'expo-av';
@@ -9,6 +9,8 @@ import { useEffect } from 'react';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { ReadingsParamList } from '../Mreadings';
 import { useRef } from 'react';
+
+import { supabase } from '@/lib/supabase';
 
 import Settings from '@/components/profile/settings';
 
@@ -51,6 +53,10 @@ const zodiacImages: Record<string, any> = {
 export default function Prof({ userData,  info,}: any) {
     const navigation = useNavigation<NavigationProp<ReadingsParamList>>();
     const scale = useRef(new Animated.Value(1)).current;
+    const [isLoading, setLoading] = useState(false)
+    const [profData, setProfData] = useState<any>([]);
+    const [showSettings, setShowSettings] = useState(false)
+
 
     console.log("here is the:", userData)
     console.log("here is the info:", info)
@@ -74,9 +80,52 @@ export default function Prof({ userData,  info,}: any) {
       };
       pulse();
     }, [scale]);
+
+
+
+    const getDate = (date: any) => {
+      if (!date) return "Invalid Date"; 
+      const parsedDate = new Date(date); 
+      if (isNaN(parsedDate.getTime())) return "Invalid Date"; 
+      const options: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric', year: 'numeric' }; // Include the year
+      return parsedDate.toLocaleDateString('en-US', options);
+    };
     
 
 
+    useEffect(() => {
+      const fetchData = async () => {
+          const { data, error: sessionError } = await supabase.auth.getSession();
+          const userId = data?.session?.user?.id || "";
+
+        try {
+          const { data, error } = await supabase
+            .from('horoscopes') 
+            .select('*')
+            .eq('userId', userId)
+            .single()
+            
+          setProfData(data)
+          console.log("here is the data:", data)
+          if (error) throw error;
+        } catch (error: any) {
+          console.error('Error fetching data from Supabase:', error.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+      fetchData();
+    }, [userData]);
+    
+
+const dob = profData.birth
+
+const handleClick = () => {
+  setShowSettings(true)
+}
+
+console.log(showSettings)
 
     const [loaded] = useFonts({
         Light: require('@/assets/fonts/Light.ttf'),
@@ -95,14 +144,24 @@ export default function Prof({ userData,  info,}: any) {
 
 
     return (
-      <SafeAreaProvider style={{ flex: 1, backgroundColor: '#000', padding: 5, gap: 18 }}>
-      <View style={{
+      
+      <SafeAreaProvider style={{ flex: 1, backgroundColor: '#000',  }}>
+        {showSettings ? 
+        <Settings setShowSettings={setShowSettings}/>
+        : (
+
+<SafeAreaProvider style={{ flex: 1, backgroundColor: '#000', padding: 5, gap: 18 }}>
+
+          <View style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center'
       }}>
       <Text style={{ color: '#B2AFFE', fontSize: 30,  fontFamily: 'Medium',  }}>PROFILE</Text>
-      <TouchableOpacity style={{
+      <TouchableOpacity
+      onPress={handleClick}
+      
+      style={{
           borderWidth: 2,
           borderColor: '#B2AFFE',
           borderRadius: 999,
@@ -128,16 +187,16 @@ export default function Prof({ userData,  info,}: any) {
       }}>
       <Logo width={100} height={100} />
       <View>
-      <Text style={{ color: '#FFC2D9', fontSize: 20 }}>Geric</Text>
+      <Text style={{ color: '#FFC2D9', fontSize: 20 }}>{profData.name}</Text>
     <View>
       <View style={{ flexDirection: 'row', opacity: 0.8, marginTop: 10, gap: 10 }}>
-        <Text style={{ color: '#FFC2D9', fontSize: 14, textAlign: 'center', fontFamily: 'Bold' }}>2005-07-17</Text>
+        <Text style={{ color: '#FFC2D9', fontSize: 14, textAlign: 'center', fontFamily: 'Bold' }}>{getDate(dob)}</Text>
         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 2 }}>
           <View style={{ backgroundColor: '#FFC2D9', borderRadius: 9999, width: 4, height: 4 }} />
           <View style={{ backgroundColor: '#FFC2D9', borderRadius: 9999, width: 10, height: 10 }} />
           <View style={{ backgroundColor: '#FFC2D9', borderRadius: 9999, width: 4, height: 4 }} />
         </View>
-        <Text style={{ color: '#FFC2D9', fontSize: 14, textAlign: 'center', fontFamily: 'Bold' }}>10:30pm</Text>
+        <Text style={{ color: '#FFC2D9', fontSize: 14, textAlign: 'center', fontFamily: 'Bold' }}>N/A</Text>
       </View>
     </View>
       </View>
@@ -202,7 +261,7 @@ Edit
                 fontSize: 20,
                 textAlign: 'center',
                 fontFamily: 'Bold',
-              }}>Cancer</Text>
+              }}>{profData.sun_sign}</Text>
             </View>
         </View>
       </View>
@@ -217,7 +276,7 @@ Edit
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                gap: 40
+                gap: 20
             }}>
             <View style={{
                 flexDirection: 'row',
@@ -237,10 +296,10 @@ Edit
               <Text style={{
                 color: '#B2AFFE',
                 fontFamily: 'Bold',
-                fontSize: 20,
+                fontSize: 18,
                 
               }}>
-               Test
+               {profData.ascendant}
               </Text>
               <Text style={{
                     opacity: 0.5,
@@ -272,7 +331,7 @@ Edit
                 fontSize: 20,
                 
               }}>
-               Test
+               {profData.moon_sign}
               </Text>
               <Text style={{
                     opacity: 0.5,
@@ -289,7 +348,7 @@ Edit
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'center',
-                gap: 40
+                gap: 30
              
             }}>
             <View style={{
@@ -311,7 +370,7 @@ Edit
                 fontSize: 20,
                 
               }}>
-                Test
+                {profData.element}
               </Text>
               <Text style={{
                     opacity: 0.5,
@@ -342,7 +401,7 @@ Edit
                 fontSize: 20,
                 
               }}>
-               Test
+              Male
               </Text>
               <Text style={{
                     opacity: 0.5,
@@ -390,6 +449,9 @@ Edit
              
             </View>
       </View>
+      </SafeAreaProvider>
+        )}
+
   </SafeAreaProvider>
     );
 }

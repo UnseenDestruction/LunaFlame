@@ -106,46 +106,41 @@ export default function Result({
 
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={{ flex: 1}}>
-          <View
-          style={{   
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            flexDirection: 'row',
-            gap: 10,
-            padding: 10,
-            paddingVertical: 10,
-            backgroundColor: '#000'
-            }}>
-          <TouchableOpacity onPress={() => navigation.navigate('Nav', {screen: 'Guidance1', })}
-            >
-            <View
+    <SafeAreaProvider style={{ flex: 1, backgroundColor: "#000"}}>
+      <BlurView
+              intensity={10}
+              tint="light"
               style={{
+                overflow: 'hidden',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+                flexDirection: 'row',
+                gap: 10,
                 padding: 10,
-                backgroundColor: "rgba(50, 50, 50, 1)",
-                borderRadius: 999,
+                paddingVertical: 10,
               }}
             >
-              <AntDesign name="left" size={24} color="rgba(255, 255, 255, 0.5)" />
-            </View>
-          </TouchableOpacity>
-          <Text style={{ color: "#B2AFFE", fontSize: 30, fontFamily: "Light" }}>
-            DREAM REVEALED
-          </Text>
-          </View>
-        <ScrollView contentContainerStyle={{ alignItems: "center", backgroundColor: '#000' }}>
+              <TouchableOpacity onPress={() => navigation.navigate('Nav')}>
+              <View style={{padding: 10, backgroundColor: 'rgba(50, 50, 50, 1)', borderRadius: 999}}>
+                <AntDesign name="left" size={24} color="rgba(255, 255, 255, 0.5)" />
+                </View>
+              </TouchableOpacity>
+            
+                    <Text style={{ color: '#B2AFFE', fontSize: 30,  fontFamily: 'Light',  }}>DREAM EXPLAIN</Text>
+            </BlurView>
+        <ScrollView contentContainerStyle={{ alignItems: "center",  marginTop: 10 }}>
           <View
             style={{
-              height: "60%",
               alignItems: "center",
               justifyContent: "flex-start",
-              marginBottom: 20,
+              marginBottom: 100,
             }}
           >
                     <Image
                       source={{ uri: image }}
-                      style={{ width: 500, height: 400 }}
+                      style={{ width: 450, height: 300,
+                        backgroundColor: 'transparent',
+                       }}
                     />
           </View>
 
@@ -154,10 +149,11 @@ export default function Result({
               position: "relative",
               zIndex: 1,
               width: "95%",
-              bottom: 150,
-              height: 320,
-              borderColor: '#fff',
+              borderColor: '#b3aeff',
+              borderWidth: 1,
+              borderRadius: 20,
               opacity: 1,
+              marginTop: -150
             }}
           >
           
@@ -310,7 +306,6 @@ export default function Result({
               </LinearGradient>
           </View>
         </ScrollView>
-      </SafeAreaView>
     </SafeAreaProvider>
   );
 }

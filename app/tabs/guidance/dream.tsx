@@ -3,15 +3,12 @@ import Main from '@/components/Guidance/Dream/main';
 import Analyze from '@/components/Guidance/Dream/analyze';
 import { useState, useEffect } from 'react';
 import React from 'react';
-import { useRoute } from '@react-navigation/native';
 
 export default function Dream({ navigation }: any) {
-  const route = useRoute();
   const [loading, setIsLoading] = useState(false);
   const [isAnalyzed, setIsAnalyzed] = useState(false);
   const [analysisResult, setAnalysisResult] = useState<any>(null);
 
-  console.log('Current route name:', route.name);
 
   useEffect(() => {
     if (analysisResult) {

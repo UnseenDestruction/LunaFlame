@@ -8,11 +8,17 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect } from 'react';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { useRef } from 'react';
+import { PanGestureHandler, State } from 'react-native-gesture-handler';
 
 
-export default function Settings({ }: any) {
+import Arrow from '@/assets/images/profile/right.svg'
+
+
+
+
+export default function Settings({ setShowSettings }: { setShowSettings: (value: boolean) => void }) {
     const scale = useRef(new Animated.Value(1)).current;
-
+    const translateY = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
       const pulse = () => {
@@ -35,6 +41,26 @@ export default function Settings({ }: any) {
     }, [scale]);
     
 
+  const handleGesture = Animated.event(
+    [{ nativeEvent: { translationY: translateY } }],
+    { useNativeDriver: true }
+  );
+
+  const handleStateChange = (event: any) => {
+    if (event.nativeEvent.state === State.END) {
+      if (event.nativeEvent.translationY > 100) {
+        setShowSettings(false);
+      } else {
+        Animated.timing(translateY, {
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: true,
+        }).start();
+      }
+    }
+  };
+    
+
 
 
     const [loaded] = useFonts({
@@ -54,50 +80,259 @@ export default function Settings({ }: any) {
 
 
     return (
-      <SafeAreaProvider style={{ flex: 1, backgroundColor: '#2A2A3C', padding: 5, gap: 18 }}>
-      <View>
-        <Text style={{
-            fontFamily: 'Light',
+      <SafeAreaProvider style={{ flex: 1, backgroundColor: '#2A2A3C', padding: 10,  }}>
+     <PanGestureHandler onGestureEvent={handleGesture} onHandlerStateChange={handleStateChange}>
+     
+     <Animated.View
+          style={{
+            transform: [{ translateY }],
+            flex: 1,
+          }}
+        >
+      <TouchableOpacity
+       onPress={() => setShowSettings(false)}
+      style={{
+        backgroundColor: '#B2AFFE',
+        height: 6,
+        width: 50,
+        borderRadius: 10,
+        position: 'relative',
+        left: '45%'
+      }}/>
+      <View style={{
+        flexDirection: 'column',
+        marginTop: 40
+      }}>
 
+  
+
+        <Text style={{
+            fontFamily: 'Light',  
+          fontSize: 30,
+          color: '#B2AFFE',
         }}>
             SETTINGS
         </Text>
-        <View>
-        <Animated.View
+        <View style={{
+          marginTop: 30
+        }}>
+           <Animated.View
     style={{
       borderColor: "#B2AFFE52",
       borderWidth: 1,
-      borderRadius: 999,
+borderRadius: 20,
       padding: 5,
       transform: [{ scale }],
     }}
   >
       <TouchableOpacity
 style={{
-backgroundColor: "#B2AFFE",
-borderRadius: 999,
-paddingVertical: 12,
-paddingHorizontal: 80,
+backgroundColor: "#1b1d2b",
+borderRadius: 20,
+padding: 15,
 alignItems: "center",
 shadowColor: "#000",
 shadowOffset: { width: 0, height: 4 },
 shadowOpacity: 0.25,
 shadowRadius: 4.65,
 elevation: 8,
+flexDirection: 'row',
+justifyContent: 'space-between',
+
 }}
 >
 <Text
 style={{
-fontSize: 13,
-fontFamily: 'Bold'
+fontSize: 18,
+fontFamily: 'Bold',
+color: '#B2AFFE'
 }}
 >
-Continue
+Rate lunaflame
 </Text>
+<Arrow width={30} height={30}/>
+</TouchableOpacity>
+  </Animated.View>
+  <Animated.View
+    style={{
+      borderColor: "#B2AFFE52",
+      borderWidth: 1,
+borderRadius: 20,
+      padding: 5,
+      transform: [{ scale }],
+    }}
+  >
+      <TouchableOpacity
+style={{
+backgroundColor: "#1b1d2b",
+borderRadius: 20,
+padding: 15,
+alignItems: "center",
+shadowColor: "#000",
+shadowOffset: { width: 0, height: 4 },
+shadowOpacity: 0.25,
+shadowRadius: 4.65,
+elevation: 8,
+flexDirection: 'row',
+justifyContent: 'space-between',
+
+}}
+>
+<Text
+style={{
+fontSize: 18,
+fontFamily: 'Bold',
+color: '#B2AFFE'
+}}
+>
+Follow on facebook
+</Text>
+<Arrow width={30} height={30}/>
+</TouchableOpacity>
+  </Animated.View>
+        <Animated.View
+    style={{
+      borderColor: "#B2AFFE52",
+      borderWidth: 1,
+borderRadius: 20,
+      padding: 5,
+      transform: [{ scale }],
+    }}
+  >
+      <TouchableOpacity
+style={{
+backgroundColor: "#1b1d2b",
+borderRadius: 20,
+padding: 15,
+alignItems: "center",
+shadowColor: "#000",
+shadowOffset: { width: 0, height: 4 },
+shadowOpacity: 0.25,
+shadowRadius: 4.65,
+elevation: 8,
+flexDirection: 'row',
+justifyContent: 'space-between',
+
+}}
+>
+<Text
+style={{
+fontSize: 18,
+fontFamily: 'Bold',
+color: '#B2AFFE'
+}}
+>
+Get support
+</Text>
+<Arrow width={30} height={30}/>
 </TouchableOpacity>
   </Animated.View>
         </View>
-      </View>
+
+        <View style={{
+          flexDirection: 'column',
+          marginTop: 20,
+        }}>
+        <Text style={{
+            fontFamily: 'Light',  
+          fontSize: 20,
+          color: '#B2AFFE',
+          marginBottom: 10
+        }}>
+          NOTIFICATIONS
+        </Text>
+        <Animated.View
+    style={{
+      borderColor: "#B2AFFE52",
+      borderWidth: 1,
+borderRadius: 20,
+      padding: 5,
+      transform: [{ scale }],
+    }}
+  >
+      <TouchableOpacity
+style={{
+backgroundColor: "#1b1d2b",
+borderRadius: 20,
+padding: 15,
+alignItems: "center",
+shadowColor: "#000",
+shadowOffset: { width: 0, height: 4 },
+shadowOpacity: 0.25,
+shadowRadius: 4.65,
+elevation: 8,
+flexDirection: 'row',
+justifyContent: 'space-between',
+
+}}
+>
+<Text
+style={{
+fontSize: 18,
+fontFamily: 'Bold',
+color: '#B2AFFE'
+}}
+>
+Allow notifications
+</Text>
+<Arrow width={30} height={30}/>
+</TouchableOpacity>
+  </Animated.View>
+        </View>
+
+        <View style={{
+          flexDirection: 'column',
+          marginTop: 20,
+        }}>
+        <Text style={{
+            fontFamily: 'Light',  
+          fontSize: 20,
+          color: '#B2AFFE',
+          marginBottom: 10
+        }}>
+         ACCOUNT
+        </Text>
+        <Animated.View
+    style={{
+      borderColor: "#B2AFFE52",
+      borderWidth: 1,
+borderRadius: 20,
+      padding: 5,
+      transform: [{ scale }],
+    }}
+  >
+      <TouchableOpacity
+style={{
+backgroundColor: "#1b1d2b",
+borderRadius: 20,
+padding: 15,
+alignItems: "center",
+shadowColor: "#000",
+shadowOffset: { width: 0, height: 4 },
+shadowOpacity: 0.25,
+shadowRadius: 4.65,
+elevation: 8,
+flexDirection: 'row',
+justifyContent: 'space-between',
+
+}}
+>
+<Text
+style={{
+fontSize: 18,
+fontFamily: 'Bold',
+color: '#B2AFFE'
+}}
+>
+Delete account
+</Text>
+<Arrow width={30} height={30}/>
+</TouchableOpacity>
+  </Animated.View>
+        </View>
+        </View>
+        </Animated.View>
+        </PanGestureHandler>
   </SafeAreaProvider>
     );
 }
