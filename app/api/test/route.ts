@@ -2,7 +2,7 @@ import OpenAI from "openai";
 import { NextResponse } from "next/server";
 
 const GPT = process.env.GPT;
-const Google = process.env.GPT;
+// const Google = process.env.GPT;
 const ACCESS_CODE = process.env.ACCESS_CODE;
 const openai = new OpenAI({ apiKey: GPT });
 

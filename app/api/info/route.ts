@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import OpenAI from "openai";
 import { DateTime } from "luxon";
 import { NextResponse } from "next/server";
@@ -18,7 +20,9 @@ type SignUpRequest = {
   gender: string
 };
 
-export async function POST(request: any) {
+
+
+export async function POST(request: Request) {
   try {
     const accessCode = request.headers.get("x-api-key");
     if (!accessCode || accessCode !== ACCESS_CODE) {
@@ -106,7 +110,7 @@ export async function POST(request: any) {
     console.log("here is the:", extractedData.affirmation)
     
 
-    const { data, error } = await supabase.from("horoscopes").insert([
+    const { error } = await supabase.from("horoscopes").insert([
       {
         userId: body.userId,
         name: body.name,

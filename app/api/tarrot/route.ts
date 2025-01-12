@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import OpenAI from "openai";
 import { NextResponse } from "next/server";
 
@@ -5,6 +7,7 @@ const GPT = process.env.GPT;
 const ACCESS_CODE = process.env.ACCESS_CODE;
 const openai = new OpenAI({ apiKey: GPT });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function POST(request: Request) {
   try {
     const accessCode = request.headers.get("x-api-key");
