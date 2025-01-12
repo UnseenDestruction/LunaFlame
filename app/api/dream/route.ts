@@ -1,20 +1,9 @@
-import OpenAI from "openai";
 import { NextResponse } from 'next/server';
-import { ChatOpenAI } from "@langchain/openai";
-import { ConversationChain } from "langchain/chains";
-import {
-    ChatPromptTemplate,
-    MessagesPlaceholder,
-} from "@langchain/core/prompts";
+import OpenAI from "openai";
 
 const GPT = process.env.GPT;
-const ACCESS_CODE = process.env.ACCESS_CODE; 
+const ACCESS_CODE = process.env.ACCESS_CODE;
 const openai = new OpenAI({ apiKey: GPT });
-
-const prompt = ChatPromptTemplate.fromMessages([
-    { role: "system", content: "Your name is Luna, you are an astrologer providing accurate predictions and dream interpretations and it should just be a conversational type and straight to the point." },
-    new MessagesPlaceholder("messages"),
-]);
 
 export async function POST(request: Request) {
     try {
@@ -26,26 +15,16 @@ export async function POST(request: Request) {
         const body = await request.json();
         const { userMessage } = body;
 
-        const langchain = new ChatOpenAI({
-            apiKey: GPT,
-            modelName: "gpt-4o",
-            temperature: 0,
+        const chatResponse = await openai.chat.completions.create({
+            model: "gpt-4o",
+            messages: [
+                { role: "system", content: "Your name is Luna, you are an astrologer providing accurate predictions and dream interpretations. Be conversational and straight to the point." },
+                { role: "user", content: userMessage }
+            ],
+            temperature: 0.7,
         });
 
-        const conversationChain = new ConversationChain({
-            llm: langchain,
-            verbose: true,
-            prompt: prompt 
-        });
-
-        let assistantResponse = '';
-        let imageUrl = null;
-
-        const langChainResponse = await conversationChain.call({
-            messages: [{ role: "user", content: userMessage }], 
-        });
-
-        assistantResponse += langChainResponse.response;
+        const assistantResponse = chatResponse.choices[0]?.message?.content || "I'm sorry, I couldn't process that.";
 
         const imagePrompt = `${userMessage}, highly realistic, 3D rendering, in natural light, portrait-oriented, vertical format, dream interpretation`;
         const imageResponse = await openai.images.generate({
@@ -55,17 +34,14 @@ export async function POST(request: Request) {
             size: "1024x1792",
         });
 
-        if (imageResponse && imageResponse.data && imageResponse.data[0].url) {
-            imageUrl = imageResponse.data[0].url;
-        }
+        const imageUrl = imageResponse.data[0]?.url || null;
 
         return NextResponse.json({
             role: "assistant",
             content: assistantResponse,
             image: imageUrl,
-            userMessage: userMessage
+            userMessage: userMessage,
         });
-
     } catch (error) {
         console.error('Error:', error);
         return new NextResponse('Internal Server Error', { status: 500 });

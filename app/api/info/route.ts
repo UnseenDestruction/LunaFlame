@@ -67,10 +67,14 @@ export async function POST(request: any) {
           content: `Based on the following data, generate a detailed astrological analysis including:
             Today's Horoscope: Today's Horoscope
             Affirmation: Affirmation
-            Daily Tips for ${sunSign}: Daily Tips for ${sunSign}  
+            Daily Tips for ${sunSign}: 
+            Daily Tips for ${sunSign} 
+            -Love
+            -Warning
+            -Work
+            -Suggestions
             Today's Matches: Today's Matches
             Lunar Calendar:  Lunar Calendar
-            Today's Features: Today's Features
 
             
             Name: ${body.name}

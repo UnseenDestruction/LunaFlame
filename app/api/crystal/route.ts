@@ -1,73 +1,80 @@
 import OpenAI from "openai";
-import { NextResponse } from 'next/server';
-import { ChatOpenAI } from "@langchain/openai";
-import { ConversationChain } from "langchain/chains";
-import {
-    ChatPromptTemplate,
-    MessagesPlaceholder,
-} from "@langchain/core/prompts";
+import { NextResponse } from "next/server";
 
 const GPT = process.env.GPT;
-const ACCESS_CODE = process.env.ACCESS_CODE; 
+const ACCESS_CODE = process.env.ACCESS_CODE;
 const openai = new OpenAI({ apiKey: GPT });
 
-const prompt = ChatPromptTemplate.fromMessages([
-    { role: "system", content: "Your name is Luna, you are an astrologer providing accurate predictions and dream interpretations and it should just be a conversational type and straight to the point." },
-    new MessagesPlaceholder("messages"),
-]);
-
 export async function POST(request: Request) {
-    try {
-        const accessCode = request.headers.get("x-api-key");
-        if (!accessCode || accessCode !== ACCESS_CODE) {
-            return new NextResponse('Unauthorized', { status: 401 });
-        }
-
-        const body = await request.json();
-        const { userMessage } = body;
-
-        const langchain = new ChatOpenAI({
-            apiKey: GPT,
-            modelName: "gpt-4o",
-            temperature: 0,
-        });
-
-        const conversationChain = new ConversationChain({
-            llm: langchain,
-            verbose: true,
-            prompt: prompt 
-        });
-
-        let assistantResponse = '';
-        let imageUrl = null;
-
-        const langChainResponse = await conversationChain.call({
-            messages: [{ role: "user", content: userMessage }], 
-        });
-
-        assistantResponse += langChainResponse.response;
-
-        const imagePrompt = `${userMessage}, highly realistic, 3D rendering, in natural light, portrait-oriented, vertical format, dream interpretation`;
-        const imageResponse = await openai.images.generate({
-            model: "dall-e-3", 
-            prompt: imagePrompt,
-            n: 1,
-            size: "1024x1792",
-        });
-
-        if (imageResponse && imageResponse.data && imageResponse.data[0].url) {
-            imageUrl = imageResponse.data[0].url;
-        }
-
-        return NextResponse.json({
-            role: "assistant",
-            content: assistantResponse,
-            image: imageUrl,
-            userMessage: userMessage
-        });
-
-    } catch (error) {
-        console.error('Error:', error);
-        return new NextResponse('Internal Server Error', { status: 500 });
+  try {
+    const accessCode = request.headers.get("x-api-key");
+    if (!accessCode || accessCode !== ACCESS_CODE) {
+      return new NextResponse("Unauthorized", { status: 401 });
     }
+
+    const body = await request.json();
+    console.log("here is the credits:", body)
+
+    const { userName, dob } = body;
+
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        {
+          role: "system",
+          content: `You are a skilled numerologist. Given a name and date of birth, analyze the user's numerology and return structured JSON data. 
+          The response must be a valid JSON array of objects, each representing a numerology aspect. 
+          Each object should have:
+          - "name": The numerology aspect (e.g., "Life Path Number", "Expression Number").
+          - "number": The calculated numerology number.
+          - "title": A unique and descriptive title related to the meaning of the numerology number.
+          - "description": A detailed explanation of its significance, including strengths, challenges, and personality traits.
+          Return **only** the JSON data, no extra text.`
+        },
+        {
+          role: "user",
+          content: `Please calculate the numerology readings based on the following information:
+          Name: ${userName}
+          Date of Birth: ${dob}
+          
+          Return the response in JSON format as an array of objects. Each object should contain:
+          - "name" (e.g., "Life Path Number")
+          - "number" (the derived number)
+          - "title" (a creative label)
+          - "description" (detailed meaning of the number).`
+        },
+      ],
+    });
+
+    let assistantResponse = response.choices[0]?.message?.content;
+
+
+    if (!assistantResponse) {
+      throw new Error("Assistant response is null or undefined.");
+    }
+
+    assistantResponse = assistantResponse.replace(/```json|```/g, "").trim();
+    console.log("Cleaned assistant response:", assistantResponse);
+
+    let numerology;
+    try {
+      numerology = JSON.parse(assistantResponse);
+      if (!Array.isArray(numerology)) {
+        throw new Error("Response format is invalid: Expected an array.");
+      }
+    } catch (parseError) {
+      console.error("JSON Parsing Error:", parseError);
+      throw new Error("Failed to parse response. Ensure JSON structure is correct.");
+    }
+
+
+    return NextResponse.json({
+      status: "success",
+      message: "Numerology Analysis Complete.",
+      content: numerology,
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    return new NextResponse("Internal Server Error", { status: 500 });
+  }
 }
